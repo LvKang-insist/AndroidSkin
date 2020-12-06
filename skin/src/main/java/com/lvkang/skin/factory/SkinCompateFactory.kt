@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @time 2020/11/27 23:39
  * @description
  */
-class SkinCompateFactory(private val context: Context) : LayoutInflater.Factory2 {
+class SkinCompateFactory : LayoutInflater.Factory2 {
 
     private val mSkinHelpers = CopyOnWriteArrayList<WeakReference<SkinCompatSupportable>>()
 

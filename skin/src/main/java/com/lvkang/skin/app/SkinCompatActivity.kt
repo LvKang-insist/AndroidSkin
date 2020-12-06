@@ -17,7 +17,7 @@ import com.lvkang.skin.obsreve.SkinObserver
 open class SkinCompatActivity : AppCompatActivity(), SkinObserver {
 
 
-    private val skinFactory by lazy { SkinCompateFactory(this) }
+    private val skinFactory by lazy { SkinCompateFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         LayoutInflaterCompat.setFactory2(layoutInflater, skinFactory)

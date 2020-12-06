@@ -1,21 +1,25 @@
 package com.lvkang.skin
 
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.AssetManager
+import android.content.res.Resources
 import android.text.TextUtils
 import com.lvkang.skin.config.SkinConfig
 import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.inflater.SkinLayoutInflater
 import com.lvkang.skin.obsreve.SkinObserverable
+import com.lvkang.skin.resource.SkinCompatResources
 import java.io.File
 
 object SkinManager : SkinObserverable() {
 
-    private var mContext: Context? = null
+    private lateinit var mContext: Application
     private val inflaters = arrayListOf<SkinLayoutInflater>()
     private var isDefaultSkin = true
-    private var skinResourceManager: SkinResourceManager? = null
 
     /**
      * 自定义 View 时，可选择添加一个{@link SkinLayoutInflater}
@@ -30,19 +34,18 @@ object SkinManager : SkinObserverable() {
         return inflaters
     }
 
+    /** 获取当前是否为默认皮肤 */
     fun getIsDefaultSkin(): Boolean {
         return isDefaultSkin
     }
 
 
-    fun init(context: Context): SkinManager {
+    fun init(context: Application): SkinManager {
         SkinPreUtils.init(context)
-        mContext = context.applicationContext
+        mContext = context
         //每次打开应用都会到这里来，做一系列的预防，防止皮肤被删除
         val currentSkinPath = SkinPreUtils.getSkinPath()
         isDefaultSkin = false
-        //做一些初始化的工作
-        skinResourceManager = SkinResourceManager(mContext!!, currentSkinPath)
         return this
     }
 
@@ -57,15 +60,15 @@ object SkinManager : SkinObserverable() {
         }
         if (!isPackageName(skinPath)) return SkinConfig.SKIN_FILE_ERROR
         isDefaultSkin = false
-        skinResourceManager = SkinResourceManager(mContext!!, skinPath)
+        TODO("未完成：resources 资源加载")
         //改变皮肤
-        checkSkin()
+        notifyUpdateSkin()
         //保存皮肤的状态
         SkinPreUtils.saveSkinStatus(skinPath)
         return SkinConfig.SKIN_CHANGE_SUCCESS
     }
 
-    private fun checkSkin() {
+    private fun notifyUpdateSkin() {
         SkinManager.notifyUpDataSkin()
     }
 
@@ -84,9 +87,10 @@ object SkinManager : SkinObserverable() {
         //当前app资源路径
         val resPath = mContext!!.packageResourcePath
         isDefaultSkin = false
-        skinResourceManager = SkinResourceManager(mContext!!, resPath)
+        TODO("未完成：resources 资源加载")
+//        skinCompatResources = SkinCompatResources(mContext!!, resPath)
         //设置为默认皮肤
-        checkSkin()
+        notifyUpdateSkin()
         return SkinConfig.SKIN_CHANGE_SUCCESS
     }
 
@@ -94,7 +98,7 @@ object SkinManager : SkinObserverable() {
      * 包名是否为空，true 表示不为空
      */
     private fun isPackageName(currentSkinPath: String): Boolean {
-        val packageName = mContext!!.packageManager.getPackageArchiveInfo(
+        val packageName = mContext.packageManager.getPackageArchiveInfo(
             currentSkinPath, PackageManager.GET_ACTIVITIES
         )!!.packageName
         if (TextUtils.isEmpty(packageName)) {
@@ -105,9 +109,30 @@ object SkinManager : SkinObserverable() {
     }
 
     /**
-     * 获取当前皮肤资源
+     * 获取皮肤 resources
      */
-    fun getSkinResourceManager(): SkinResourceManager {
-        return skinResourceManager!!
+    @SuppressLint("DiscouragedPrivateApi")
+    fun getSkinResourceManager(skinPath: String): Resources {
+        val superRes = mContext.resources
+        val asset = AssetManager::class.java.newInstance()
+        val method =
+            AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+        method.invoke(asset, skinPath)
+        return Resources(asset, superRes.displayMetrics, superRes.configuration)
     }
+
+    /**
+     * 获取皮肤包名
+     */
+    fun getSkinPackageName(skinPath: String): String? {
+        return mContext.packageManager.getPackageArchiveInfo(
+            skinPath,
+            PackageManager.GET_ACTIVITIES
+        )?.packageName
+    }
+
+    fun getContext(): Context {
+        return mContext
+    }
+
 }

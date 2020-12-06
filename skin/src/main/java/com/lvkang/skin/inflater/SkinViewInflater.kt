@@ -163,8 +163,8 @@ open class SkinViewInflater {
             }
         }
 
-        private fun resolveMethod(context: Context?, name: String) {
-            var context = context
+        private fun resolveMethod(mContext: Context?, name: String) {
+            var context = mContext
             while (context != null) {
                 try {
                     if (!context.isRestricted) {
@@ -172,11 +172,9 @@ open class SkinViewInflater {
                             mMethodName,
                             View::class.java
                         )
-                        if (method != null) {
-                            mResolvedMethod = method
-                            mResolvedContext = context
-                            return
-                        }
+                        mResolvedMethod = method
+                        mResolvedContext = context
+                        return
                     }
                 } catch (e: NoSuchMethodException) {
                     // Failed to find method, keep searching up the hierarchy.
