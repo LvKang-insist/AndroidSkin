@@ -15,11 +15,14 @@ import com.lvkang.skin.SkinManager
  */
 @SuppressLint("DiscouragedPrivateApi")
 object SkinCompatResources {
-
+    const val NOT_ID = 0
     private lateinit var resources: Resources
     private lateinit var packageName: String
+    private lateinit var skinName: String
     private lateinit var loaderStrategy: SkinLoaderStrategy
+    private val context by lazy { SkinManager.getContext() }
     private var isDefaultSkin = true
+
 
     fun resetSkin(
         resources: Resources,
@@ -28,6 +31,7 @@ object SkinCompatResources {
         isDefaultSkin = true
         this.resources = resources
         this.packageName = ""
+        this.skinName = ""
         this.loaderStrategy = loaderStrategy
     }
 
@@ -35,10 +39,12 @@ object SkinCompatResources {
     fun setupSkin(
         resources: Resources,
         packageName: String,
+        skinName: String,
         loaderStrategy: SkinLoaderStrategy
     ) {
         this.resources = resources
         this.packageName = packageName
+        this.skinName = skinName
         this.loaderStrategy = loaderStrategy
         isDefaultSkin = false
     }
@@ -48,17 +54,14 @@ object SkinCompatResources {
      */
     fun getDrawable(resId: Int): Drawable? {
         tryCatch {
-            //如果不是默认皮肤
-            if (!SkinManager.getIsDefaultSkin()) {
-                val resName = resources.getResourceEntryName(resId)
-                val resType = resources.getResourceTypeName(resId)
-                val id = resources.getIdentifier(resName, resType, packageName)
-                if ("drawable" == resType) {
-                    return ResourcesCompat.getDrawable(resources, id, null)
-                }
-            } else {
-                return ResourcesCompat.getDrawable(resources, resId, null)
+            val drawable = loaderStrategy.getDrawable(context, skinName, resId)
+            if (drawable != null) return drawable
+            if (!isDefaultSkin) {
+                val skinResId = getSkinResId(resId)
+                if (skinResId != NOT_ID)
+                    return ResourcesCompat.getDrawable(resources, skinResId, null)
             }
+            return ResourcesCompat.getDrawable(context.resources, resId, null)
         }
         return null
     }
@@ -66,18 +69,22 @@ object SkinCompatResources {
     /** 通过名字获取颜色 */
     fun getColor(resId: Int): Int? {
         tryCatch {
-            if (!SkinManager.getIsDefaultSkin()) {
-                val resName = resources.getResourceEntryName(resId)
-                val resType = resources.getResourceTypeName(resId)
-                val id = resources.getIdentifier(resName, resType, packageName)
-                if ("color" == resType) {
-                    return ResourcesCompat.getColor(resources, id, null)
-                }
-            } else {
-                return ResourcesCompat.getColor(resources, resId, null)
+            val color = loaderStrategy.getColor(context, skinName, resId)
+            if (color != NOT_ID) return color
+            if (!isDefaultSkin) {
+                val skinResId = getSkinResId(resId)
+                if (skinResId != NOT_ID)
+                    return ResourcesCompat.getColor(resources, skinResId, null)
             }
+            return ResourcesCompat.getColor(context.resources, resId, null)
         }
         return null
+    }
+
+    fun getSkinResId(resId: Int): Int {
+        val resName = loaderStrategy.getSkinResName() ?: resources.getResourceEntryName(resId)
+        val resType = resources.getResourceTypeName(resId)
+        return resources.getIdentifier(resName, resType, packageName)
     }
 
     private inline fun <T> tryCatch(block: () -> T): T? {

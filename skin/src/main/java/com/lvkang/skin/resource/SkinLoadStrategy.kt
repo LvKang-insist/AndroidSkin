@@ -7,7 +7,8 @@ package com.lvkang.skin.resource
  * @time 2020/12/07 01:07
  * @description
  */
-enum class SkinLoadType {
+enum class SkinLoadStrategy {
+    SKIN_LOADER_STARTEGY,
     SKIN_LOADER_STRATEGY_NONE,
-    SKIN_LOADER_STARTEGY_ASSETS
+    SKIN_LOADER_STRATEGY_ASSETS,
 }
