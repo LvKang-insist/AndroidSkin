@@ -35,11 +35,14 @@ object SkinPreUtils {
     }
 
     /**
+     * @param skinPath 皮肤路径，注意不包括皮肤名称
+     * @param skinName 皮肤名称
+     * @param skinStrategy 皮肤加载策略
      * 保存当前使用皮肤的状态
      */
-    fun saveSkinStatus(skinPath: String, SkinName: String, skinStrategy: String?) {
+    fun saveSkinStatus(skinPath: String, skinName: String, skinStrategy: String?) {
         saveSkinPath(skinPath)
-        saveSkinName(SkinName)
+        saveSkinName(skinName)
         saveSkinStrategy(skinStrategy)
     }
 
@@ -94,7 +97,7 @@ object SkinPreUtils {
     /**
      * 获取当前皮肤加载策略
      */
-    fun getSkinStrategy(): String? {
+    fun getSkinStrategyName(): String? {
         return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .getString(SkinConfig.SKIN_STRATEGY, null)
     }

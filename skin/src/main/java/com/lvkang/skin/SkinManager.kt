@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.content.res.Resources
 import android.util.Log
-import com.lvkang.skin.config.SkinConfig
+import com.lvkang.skin.config.SkinConfig.SKIN_LOAD_ERROR
 import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.inflater.SkinLayoutInflater
 import com.lvkang.skin.ktx.tryCache
@@ -22,7 +22,7 @@ object SkinManager : SkinObserverable() {
     private const val TAG = "SkinManager"
     private lateinit var mContext: Application
     private val inflaters = arrayListOf<SkinLayoutInflater>()
-    private val startegy = mutableMapOf<String, SkinLoaderStrategy>()
+    private val startegy = mutableMapOf<String, AbstractSkinLoadStrategy>()
 
     /**
      * 自定义 View 时，可选择添加一个{@link SkinLayoutInflater}
@@ -40,16 +40,21 @@ object SkinManager : SkinObserverable() {
     fun init(context: Application): SkinManager {
         SkinPreUtils.init(context)
         mContext = context
-        startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = SkinLoadImpl()
-        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE.name] = SkinNoneLoaderImpl()
-        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS.name] = SkinAssetsLoaderImpl()
+        startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = AbstractSkinLoadImpl()
+        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE.name] = AbstractSkinNoneLoadImpl()
+        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS.name] = AbstractSkinAssetsLoadImpl()
 
         val name = SkinPreUtils.getSkinName()
-        val loadStrategy = SkinPreUtils.getSkinStrategy()
-        if (name != null && loadStrategy != null) {
-            //如果没有使用皮肤，则加载策略为 SKIN_LOADER_STRATEGY_NONE
-            loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null)
+        val loadStrategyName = SkinPreUtils.getSkinStrategyName()
+        if (name != null && loadStrategyName != null) {
+            val loadStrategy = getStrategyType(loadStrategyName)
+            if (loadStrategy != null) {
+                loadSkin(name, loadStrategy, null)
+                return this
+            }
         }
+        //如果没有使用皮肤，则加载策略为 SKIN_LOADER_STRATEGY_NONE
+        loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null)
         return this
     }
 
@@ -62,8 +67,9 @@ object SkinManager : SkinObserverable() {
         skinLoadListener: SkinLoadListener? = null
     ) {
         val name = SkinPreUtils.getSkinName()
-        val loadStrategy = SkinPreUtils.getSkinStrategy()
+        val loadStrategy = SkinPreUtils.getSkinStrategyName()
         if (name == skinName && skinLoadStrategy.name == loadStrategy) {
+            skinLoadListener?.loadRepeat()
             Log.e(TAG, "loadNewSkin: Do not reload the skin!")
             return
         }
@@ -76,13 +82,14 @@ object SkinManager : SkinObserverable() {
         skinLoadListener: SkinLoadListener? = null
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            tryCache {
+            try {
                 val skinLoaderStrategy = startegy[skinLoadStrategy.name]
                 val skinPath = skinLoaderStrategy?.loadSkin(skinName)
                 launch(Dispatchers.Main) {
                     when {
                         skinPath == null -> {
-                            skinLoadListener?.loadSkinFailure("The skin resource failed to load!")
+                            Log.e(TAG, "loadSkin: The skin resource failed to load!")
+                            skinLoadListener?.loadSkinFailure(SKIN_LOAD_ERROR)
                         }
                         skinPath.isNotEmpty() -> {
                             //改变皮肤
@@ -93,11 +100,15 @@ object SkinManager : SkinObserverable() {
                         }
                         skinPath.isEmpty() -> {
                             //length==0 ，表示策略为 SKIN_LOADER_STRATEGY_NONE，只需要刷新即可
+                            skinLoadListener?.loadSkinSucess()
                             notifyUpdateSkin()
                         }
                     }
                 }
-                cancel()
+            } catch (e: Exception) {
+                Log.e(TAG, "loadSkin: loadSkin: The skin resource failed to load!")
+                e.printStackTrace()
+                skinLoadListener?.loadSkinFailure(SKIN_LOAD_ERROR)
             }
         }
     }
@@ -111,10 +122,30 @@ object SkinManager : SkinObserverable() {
      * 恢复默认
      */
     fun restoreDefault() {
-        SkinPreUtils.clearSkinInfo()
-        loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null)
+        loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, object : SkinLoadListener {
+            override fun loadSkinSucess() {
+                SkinPreUtils.clearSkinInfo()
+            }
+
+            override fun loadSkinFailure(error: String) = Unit
+
+            override fun loadRepeat() = Unit
+        })
     }
 
+
+    /**
+     * @param strategy 策略名称
+     * 获取加载策略
+     */
+    fun getStrategyType(strategy: String): SkinLoadStrategy? {
+        SkinLoadStrategy.values().forEach {
+            if (it.name == strategy) {
+                return it
+            }
+        }
+        return null
+    }
 
     /**
      * 获取皮肤 resources

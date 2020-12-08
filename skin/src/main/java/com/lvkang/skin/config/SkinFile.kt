@@ -43,7 +43,7 @@ object SkinFile {
      */
     fun isFile(filePath: String): Boolean {
         if (!File(filePath).exists()) {
-            SkinPreUtils.clearSkinInfo()
+//            SkinPreUtils.clearSkinInfo()
             return false
         }
         return true

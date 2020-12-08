@@ -13,7 +13,7 @@ import android.view.View
  */
 
 
-abstract class SkinLoaderStrategy {
+abstract class AbstractSkinLoadStrategy {
 
     /**
      * 加载皮肤

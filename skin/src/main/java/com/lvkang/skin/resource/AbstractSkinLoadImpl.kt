@@ -11,15 +11,15 @@ import com.lvkang.skin.config.SkinPreUtils
  * @time 2020/12/07 22:27
  * @description
  */
-class SkinLoadImpl : SkinLoaderStrategy() {
+class AbstractSkinLoadImpl : AbstractSkinLoadStrategy() {
 
     override fun loadSkin(skinName: String): String? {
         val skinPath = SkinPreUtils.getSkinCacheDir() + skinName
         val resource = SkinManager.getSkinResources(skinPath)
         val packageName = SkinFile.getSkinPackageName(skinPath)
         if (resource != null && packageName != null) {
-            SkinCompatResources.setupSkin(resource, packageName, this)
-            return skinPath
+            SkinCompatResources.setupSkin(resource, packageName, skinName,this)
+            return SkinPreUtils.getSkinCacheDir()
         }
         return null
     }

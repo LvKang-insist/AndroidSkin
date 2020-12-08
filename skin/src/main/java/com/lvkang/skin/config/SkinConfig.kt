@@ -26,20 +26,8 @@ object SkinConfig {
     //皮肤文件的缓存路径
     const val SKIN_DIR = "skin_dir"
 
-    //不需要改变任何东西
-    const val SKIN_CHANGE_NOTHING = -1
-
-    //换肤成功
-    const val SKIN_CHANGE_SUCCESS = 1
-
-    /** 重复更换 */
-    const val SKIN_CHANGE_REPEAT = 2
-
-    //找不到文件
-    const val SKIN_FILE_NOT_FOUND = 3
-
-    //文件错误
-    const val SKIN_FILE_ERROR = 4
+    /** 加载皮肤失败 */
+    const val SKIN_LOAD_ERROR = "ERROR"
 
 
 }

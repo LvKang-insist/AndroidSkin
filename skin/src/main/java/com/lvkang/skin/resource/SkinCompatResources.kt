@@ -19,20 +19,20 @@ object SkinCompatResources {
     private lateinit var resources: Resources
     private lateinit var packageName: String
     private lateinit var skinName: String
-    private lateinit var loaderStrategy: SkinLoaderStrategy
+    private lateinit var loadStrategyAbstract: AbstractSkinLoadStrategy
     private val context by lazy { SkinManager.getContext() }
     private var isDefaultSkin = true
 
 
     fun resetSkin(
         resources: Resources,
-        loaderStrategy: SkinLoaderStrategy
+        loadStrategyAbstract: AbstractSkinLoadStrategy
     ) {
         isDefaultSkin = true
         this.resources = resources
         this.packageName = ""
         this.skinName = ""
-        this.loaderStrategy = loaderStrategy
+        this.loadStrategyAbstract = loadStrategyAbstract
     }
 
 
@@ -40,12 +40,12 @@ object SkinCompatResources {
         resources: Resources,
         packageName: String,
         skinName: String,
-        loaderStrategy: SkinLoaderStrategy
+        loadStrategyAbstract: AbstractSkinLoadStrategy
     ) {
         this.resources = resources
         this.packageName = packageName
         this.skinName = skinName
-        this.loaderStrategy = loaderStrategy
+        this.loadStrategyAbstract = loadStrategyAbstract
         isDefaultSkin = false
     }
 
@@ -54,7 +54,7 @@ object SkinCompatResources {
      */
     fun getDrawable(resId: Int): Drawable? {
         tryCatch {
-            val drawable = loaderStrategy.getDrawable(context, skinName, resId)
+            val drawable = loadStrategyAbstract.getDrawable(context, skinName, resId)
             if (drawable != null) return drawable
             if (!isDefaultSkin) {
                 val skinResId = getSkinResId(resId)
@@ -69,7 +69,7 @@ object SkinCompatResources {
     /** 通过名字获取颜色 */
     fun getColor(resId: Int): Int? {
         tryCatch {
-            val color = loaderStrategy.getColor(context, skinName, resId)
+            val color = loadStrategyAbstract.getColor(context, skinName, resId)
             if (color != NOT_ID) return color
             if (!isDefaultSkin) {
                 val skinResId = getSkinResId(resId)
@@ -82,7 +82,7 @@ object SkinCompatResources {
     }
 
     fun getSkinResId(resId: Int): Int {
-        val resName = loaderStrategy.getSkinResName() ?: resources.getResourceEntryName(resId)
+        val resName = loadStrategyAbstract.getSkinResName() ?: resources.getResourceEntryName(resId)
         val resType = resources.getResourceTypeName(resId)
         return resources.getIdentifier(resName, resType, packageName)
     }
