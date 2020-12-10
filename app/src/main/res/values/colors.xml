@@ -10,5 +10,7 @@
 
 
     <color name="main_view">#ff0000</color>
+    <color name="skin_name_color">#333333</color>
+    <color name="home_background">#FFFFFF</color>
 
 </resources>

@@ -21,7 +21,7 @@ object SkinCompatResources {
     private lateinit var skinName: String
     private lateinit var loadStrategyAbstract: AbstractSkinLoadStrategy
     private val context by lazy { SkinManager.getContext() }
-    private var isDefaultSkin = true
+    var isDefaultSkin = true
 
 
     fun resetSkin(
@@ -47,6 +47,35 @@ object SkinCompatResources {
         this.skinName = skinName
         this.loadStrategyAbstract = loadStrategyAbstract
         isDefaultSkin = false
+    }
+
+
+    fun getString(resId: Int): String? {
+        tryCatch {
+            val string = loadStrategyAbstract.getString(context, skinName, resId)
+            if (string != null) return string
+            if (!isDefaultSkin) {
+                val skinResId = getSkinResId(resId)
+                if (skinResId != NOT_ID)
+                    return resources.getString(resId)
+            }
+            return context.resources.getString(resId)
+        }
+        return null
+    }
+
+    fun getFloat(resId: Int): Float? {
+        tryCatch {
+            val float = loadStrategyAbstract.getFloat(context, skinName, resId)
+            if (float != null) return float
+            if (!isDefaultSkin) {
+                val skinResId = getSkinResId(resId)
+                if (skinResId != NOT_ID)
+                    return ResourcesCompat.getFloat(resources, skinResId)
+            }
+            return ResourcesCompat.getFloat(context.resources, resId)
+        }
+        return null
     }
 
     /**
@@ -81,7 +110,7 @@ object SkinCompatResources {
         return null
     }
 
-    fun getSkinResId(resId: Int): Int {
+    private fun getSkinResId(resId: Int): Int {
         val resName = loadStrategyAbstract.getSkinResName() ?: resources.getResourceEntryName(resId)
         val resType = resources.getResourceTypeName(resId)
         return resources.getIdentifier(resName, resType, packageName)

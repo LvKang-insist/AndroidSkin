@@ -18,8 +18,13 @@ class MainActivity : SkinCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val view = findViewById<View>(R.id.view)
+        val view = findViewById<View>(R.id.button)
         view.setOnClickListener {
+            if (!SkinManager.getIsDefault()) {
+                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
+                SkinManager.restoreDefault()
+                return@setOnClickListener
+            }
             SkinManager.loadNewSkin(
                 "skinHome.skin",
                 SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
@@ -38,9 +43,6 @@ class MainActivity : SkinCompatActivity() {
                 })
         }
 
-        findViewById<View>(R.id.view3).setOnClickListener {
-            SkinManager.restoreDefault()
-        }
         Log.e(TAG, "onCreate: $view")
     }
 }

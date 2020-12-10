@@ -37,10 +37,10 @@ open class SkinViewInflater {
 
 
     fun createView(name: String, context: Context, attrs: AttributeSet): View? {
+        //从自定义的 Inflater 中进行加載
         var view = createViewFromInflater(context, name, attrs)
 
         if (view == null) {
-            //从自定义的 Inflater 中进行加注
             view = createViewFromTag(context, name, attrs)
         }
 

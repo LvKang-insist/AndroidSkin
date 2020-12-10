@@ -3,7 +3,6 @@ package com.lvkang.example
 import android.app.Application
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.inflater.SkinAppCompatViewInflater
-import com.lvkang.skin.wedget.support.SkinSupportView
 
 /**
  * @name BaseActivity

@@ -2,6 +2,7 @@ package com.lvkang.skin.factory
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.lvkang.skin.inflater.SkinViewInflater

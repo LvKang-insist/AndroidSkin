@@ -45,4 +45,9 @@ abstract class AbstractSkinLoadStrategy {
      * @return drawable
      */
     open fun getDrawable(context: Context, skinName: String, resId: Int): Drawable? = null
+
+    open fun getFloat(context: Context, skinName: String, resId: Int): Float? = null
+
+    open fun getString(context: Context, skinName: String, resId: Int): String? = null
+
 }

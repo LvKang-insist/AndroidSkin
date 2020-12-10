@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <declare-styleable name="skinBackgroundHelper">
         <attr name="android:background" />
     </declare-styleable>
 
+    <declare-styleable name="skinImageHelper">
+        <attr name="android:src" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="skinTextHelper">
+        <attr name="android:textColor" format="reference|color" />
+        <attr name="android:text" format="string" />
+        <attr name="android:background" format="reference|color" />
+        <attr name="android:textSize" format="dimension" />
+    </declare-styleable>
 
 </resources>

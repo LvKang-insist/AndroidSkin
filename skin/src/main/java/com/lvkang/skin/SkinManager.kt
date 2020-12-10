@@ -133,6 +133,12 @@ object SkinManager : SkinObserverable() {
         })
     }
 
+    /**
+     * @return true 表示当前为默认皮肤
+     */
+    fun getIsDefault(): Boolean {
+        return SkinCompatResources.isDefaultSkin
+    }
 
     /**
      * @param strategy 策略名称
