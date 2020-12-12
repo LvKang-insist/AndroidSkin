@@ -2,7 +2,7 @@ package com.lvkang.skin.resource
 
 import android.util.Log
 import com.lvkang.skin.SkinManager
-import com.lvkang.skin.config.SkinFile
+import com.lvkang.skin.config.SkinUtils
 import com.lvkang.skin.config.SkinPreUtils
 import java.io.File
 import java.io.IOException
@@ -21,7 +21,7 @@ class AbstractSkinAssetsLoadImpl : AbstractSkinLoadStrategy() {
         val skinPath = copyCache(skinName, SkinPreUtils.getSkinCacheDir())
         if (skinPath.isNullOrBlank()) return null
         val resource = SkinManager.getSkinResources(skinPath)
-        val packageName = SkinFile.getSkinPackageName(skinPath)
+        val packageName = SkinUtils.getSkinPackageName(skinPath)
         if (resource != null && packageName != null) {
             SkinCompatResources.setupSkin(resource, packageName, skinName, this)
             return SkinPreUtils.getSkinCacheDir()
@@ -34,7 +34,7 @@ class AbstractSkinAssetsLoadImpl : AbstractSkinLoadStrategy() {
     private fun copyCache(skinName: String, cacheDir: String): String? {
         return try {
             val outFile = File(cacheDir, skinName)
-            if (SkinFile.isFile(outFile.path)) {
+            if (SkinUtils.isFile(outFile.path)) {
                 Log.e("----------->", "copyCache: 文件存在")
                 return outFile.path
             }

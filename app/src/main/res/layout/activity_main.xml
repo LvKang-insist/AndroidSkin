@@ -11,7 +11,7 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/home_background"
+        android:background="@drawable/draw"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image"
+        android:src="@drawable/image_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view" />
 

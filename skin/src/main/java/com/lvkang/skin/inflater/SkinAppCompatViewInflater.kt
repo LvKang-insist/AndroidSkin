@@ -16,6 +16,8 @@ import com.lvkang.skin.wedget.androidx.AppxSkinView
  * @description
  */
 class SkinAppCompatViewInflater : SkinLayoutInflater {
+    @Suppress("PrivatePropertyName")
+    private val TAG = "SkinAppCompatViewInflat"
     override fun createView(context: Context, name: String, attres: AttributeSet): View? {
         return createViewFrom(context, name, attres)
     }

@@ -7,14 +7,15 @@
     </declare-styleable>
 
     <declare-styleable name="skinImageHelper">
-        <attr name="android:src" format="reference|color" />
+        <attr name="android:src" />
+        <attr name="image" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="skinTextHelper">
-        <attr name="android:textColor" format="reference|color" />
-        <attr name="android:text" format="string" />
-        <attr name="android:background" format="reference|color" />
-        <attr name="android:textSize" format="dimension" />
+        <attr name="android:textColor" />
+        <attr name="android:text" />
+        <attr name="android:background" />
+        <attr name="android:textSize" />
     </declare-styleable>
 
 </resources>

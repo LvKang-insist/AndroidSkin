@@ -2,6 +2,7 @@ package com.lvkang.skin.resource
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
 
@@ -24,6 +25,6 @@ class AbstractSkinNoneLoadImpl : AbstractSkinLoadStrategy() {
     }
 
     override fun getDrawable(context: Context, skinName: String, resId: Int): Drawable? {
-        return ResourcesCompat.getDrawable(context.resources, resId, null)
+        return context.resources.getDrawable(resId,null)
     }
 }

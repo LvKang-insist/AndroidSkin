@@ -1,6 +1,7 @@
 package com.lvkang.skin.wedget.helper
 
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
 import com.lvkang.skin.R
@@ -39,14 +40,14 @@ class SkinCompatBackgroundHelper(val view: View) : SkinCompatHelper() {
     private fun setBackground(res: Int) {
         if (res == INVALID_ID) return
         val drawable = SkinCompatResources.getDrawable(res)
-        drawable?.run {
+        if (drawable != null) {
             val paddingleft = view.paddingLeft
             val paddingTop = view.paddingTop
             val paddingRight = view.paddingRight
             val paddingBottom = view.paddingBottom
             ViewCompat.setBackground(view, drawable)
             view.setPadding(paddingleft, paddingTop, paddingRight, paddingBottom)
-            return@run
+            return
         }
         val color = SkinCompatResources.getColor(res)
         color?.run {

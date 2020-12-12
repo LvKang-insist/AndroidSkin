@@ -1,7 +1,10 @@
 package com.lvkang.skin.wedget.helper
 
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 import com.lvkang.skin.R
 import com.lvkang.skin.ktx.obtainStyledAttributes
@@ -15,7 +18,7 @@ import com.lvkang.skin.wedget.SkinCompatHelper
  * @time 2020/12/10 22:56
  * @description
  */
-class SkinCompatImageHelper(val view: ImageView) : SkinCompatHelper() {
+class SkinCompatImageHelper(val view: AppCompatImageView) : SkinCompatHelper() {
 
     var src = INVALID_ID
 
@@ -30,7 +33,6 @@ class SkinCompatImageHelper(val view: ImageView) : SkinCompatHelper() {
         applySkin()
     }
 
-
     override fun applySkin() {
         setImage(src)
     }
@@ -43,7 +45,7 @@ class SkinCompatImageHelper(val view: ImageView) : SkinCompatHelper() {
             val paddingTop = view.paddingTop
             val paddingRight = view.paddingRight
             val paddingBottom = view.paddingBottom
-            ViewCompat.setBackground(view, drawable)
+            view.setImageDrawable(drawable)
             view.setPadding(paddingleft, paddingTop, paddingRight, paddingBottom)
             return@run
         }
