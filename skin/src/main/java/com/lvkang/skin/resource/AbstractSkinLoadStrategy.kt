@@ -2,7 +2,6 @@ package com.lvkang.skin.resource
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.view.View
 
 /**
  * @name SkinLoaderStrategy
@@ -46,7 +45,7 @@ abstract class AbstractSkinLoadStrategy {
      */
     open fun getDrawable(context: Context, skinName: String, resId: Int): Drawable? = null
 
-    open fun getFloat(context: Context, skinName: String, resId: Int): Float? = null
+    open fun getDimension(context: Context, skinName: String, resId: Int): Float? = null
 
     open fun getString(context: Context, skinName: String, resId: Int): String? = null
 

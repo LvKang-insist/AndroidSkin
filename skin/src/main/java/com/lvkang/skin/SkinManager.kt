@@ -11,13 +11,17 @@ import com.lvkang.skin.app.SkinActivityLifecycle
 import com.lvkang.skin.config.SkinConfig.SKIN_LOAD_ERROR
 import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.inflater.SkinLayoutInflater
-import com.lvkang.skin.ktx.tryCache
 import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.obsreve.SkinObserverable
 import com.lvkang.skin.resource.*
+import com.lvkang.skin.resource.SkinLoadStrategy
+import com.lvkang.skin.resource.strategy.AbstractSkinAssetsLoadImpl
+import com.lvkang.skin.resource.strategy.AbstractSkinLoadImpl
+import com.lvkang.skin.resource.strategy.AbstractSkinNoneLoadImpl
 import kotlinx.coroutines.*
 import java.lang.Exception
 
+@Suppress("DEPRECATION")
 object SkinManager : SkinObserverable() {
 
     private const val TAG = "SkinManager"

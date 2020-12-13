@@ -1,14 +1,12 @@
 package com.lvkang.example
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.lvkang.skin.SkinManager
-import com.lvkang.skin.app.SkinCompatActivity
 import com.lvkang.skin.listener.SkinLoadListener
-import com.lvkang.skin.resource.AbstractSkinLoadStrategy
 import com.lvkang.skin.resource.SkinLoadStrategy
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
         }
-
-        Log.e(TAG, "onCreate: $view")
+        findViewById<View>(R.id.next).setOnClickListener {
+            startActivity(Intent(this, TestActivity::class.java))
+        }
     }
 }

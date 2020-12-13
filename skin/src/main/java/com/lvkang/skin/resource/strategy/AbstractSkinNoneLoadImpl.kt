@@ -1,14 +1,16 @@
-package com.lvkang.skin.resource
+package com.lvkang.skin.resource.strategy
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
+import com.lvkang.skin.resource.AbstractSkinLoadStrategy
+import com.lvkang.skin.resource.SkinCompatResources
+import com.lvkang.skin.resource.SkinLoadStrategy
 
 /**
  * @name SkinNoneLoaderImpl
- * @package com.lvkang.skin.resource
+ * @package com.lvkang.skin.resource.strategy
  * @author 345 QQ:1831712732
  * @time 2020/12/07 22:22
  * @description

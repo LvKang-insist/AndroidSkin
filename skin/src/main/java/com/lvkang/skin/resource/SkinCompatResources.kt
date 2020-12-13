@@ -72,7 +72,7 @@ object SkinCompatResources {
      */
     fun getDimension(resId: Int): Float? {
         tryCatch {
-            val float = loadStrategyAbstract.getFloat(context, skinName, resId)
+            val float = loadStrategyAbstract.getDimension(context, skinName, resId)
             if (float != null) return float
             if (!isDefaultSkin) {
                 val skinResId = getSkinResId(resId)

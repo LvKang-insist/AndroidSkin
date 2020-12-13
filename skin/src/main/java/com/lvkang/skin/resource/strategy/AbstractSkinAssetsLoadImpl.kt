@@ -1,15 +1,18 @@
-package com.lvkang.skin.resource
+package com.lvkang.skin.resource.strategy
 
 import android.util.Log
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.config.SkinUtils
 import com.lvkang.skin.config.SkinPreUtils
+import com.lvkang.skin.resource.AbstractSkinLoadStrategy
+import com.lvkang.skin.resource.SkinCompatResources
+import com.lvkang.skin.resource.SkinLoadStrategy
 import java.io.File
 import java.io.IOException
 
 /**
  * @name SkinAssetsLoaderImpl
- * @package com.lvkang.skin.resource
+ * @package com.lvkang.skin.resource.strategy
  * @author 345 QQ:1831712732
  * @time 2020/12/07 22:24
  * @description
@@ -35,7 +38,6 @@ class AbstractSkinAssetsLoadImpl : AbstractSkinLoadStrategy() {
         return try {
             val outFile = File(cacheDir, skinName)
             if (SkinUtils.isFile(outFile.path)) {
-                Log.e("----------->", "copyCache: 文件存在")
                 return outFile.path
             }
             val input = SkinManager.getContext().resources.assets.open(skinName)
