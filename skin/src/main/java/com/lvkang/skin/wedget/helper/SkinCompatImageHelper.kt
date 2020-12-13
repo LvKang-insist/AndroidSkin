@@ -47,7 +47,7 @@ class SkinCompatImageHelper(val view: AppCompatImageView) : SkinCompatHelper() {
             val paddingBottom = view.paddingBottom
             view.setImageDrawable(drawable)
             view.setPadding(paddingleft, paddingTop, paddingRight, paddingBottom)
-            return@run
+            return
         }
         val color = SkinCompatResources.getColor(res)
         color?.run {

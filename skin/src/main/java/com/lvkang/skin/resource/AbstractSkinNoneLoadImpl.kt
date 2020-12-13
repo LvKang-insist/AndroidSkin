@@ -25,6 +25,6 @@ class AbstractSkinNoneLoadImpl : AbstractSkinLoadStrategy() {
     }
 
     override fun getDrawable(context: Context, skinName: String, resId: Int): Drawable? {
-        return context.resources.getDrawable(resId,null)
+        return ResourcesCompat.getDrawable(context.resources, resId, null)
     }
 }

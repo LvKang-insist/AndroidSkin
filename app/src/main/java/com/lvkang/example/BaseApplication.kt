@@ -19,5 +19,7 @@ class BaseApplication : Application() {
         SkinManager.init(this)
             .addInflaters(SkinAppCompatViewInflater())
             .addInflaters(SkinAppSupportViewInflater())
+            .setAutoLoadSkin(true)
+            .build()
     }
 }

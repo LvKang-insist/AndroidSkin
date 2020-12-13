@@ -13,7 +13,9 @@ open class SkinObserverable {
     }
 
     fun addSkinObserver(skinObserver: SkinObserver) {
-        observers.add(skinObserver)
+        //如果不包含此观察者，则添加
+        if (!observers.contains(skinObserver))
+            observers.add(skinObserver)
     }
 
     fun removeSkinObserver(skinObserver: SkinObserver) {

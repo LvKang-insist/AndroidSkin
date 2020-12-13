@@ -111,20 +111,6 @@ object SkinPreUtils {
         saveSkinStrategy(null)
     }
 
-
-    /**
-     * 判断皮肤地址是否相同
-     */
-    fun equalsSkinPath(skinPath: String): Boolean {
-        val path = SkinPreUtils.getSkinPath()
-        if (path != null && path == skinPath) {
-            Toast.makeText(context, "请务重复更换皮肤", Toast.LENGTH_LONG).show()
-            return true
-        }
-        return false
-    }
-
-
     /**
      * 添加一个标记
      */

@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.app.SkinCompatActivity
 import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.resource.AbstractSkinLoadStrategy
 import com.lvkang.skin.resource.SkinLoadStrategy
 
-class MainActivity : SkinCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
@@ -30,7 +31,7 @@ class MainActivity : SkinCompatActivity() {
                 SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
                 object : SkinLoadListener {
                     override fun loadSkinSucess() {
-                        Toast.makeText(this@MainActivity, "加载成功", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "皮肤资源加载成功", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun loadSkinFailure(error: String) {

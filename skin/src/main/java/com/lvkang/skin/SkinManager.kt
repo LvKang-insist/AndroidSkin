@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.content.res.Resources
 import android.util.Log
+import com.lvkang.skin.app.SkinActivityLifecycle
 import com.lvkang.skin.config.SkinConfig.SKIN_LOAD_ERROR
 import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.inflater.SkinLayoutInflater
@@ -23,10 +24,15 @@ object SkinManager : SkinObserverable() {
     private lateinit var mContext: Application
     private val inflaters = arrayListOf<SkinLayoutInflater>()
     private val startegy = mutableMapOf<String, AbstractSkinLoadStrategy>()
+    private var isAutoLoadSkin = false
 
-    /**
-     * 自定义 View 时，可选择添加一个{@link SkinLayoutInflater}
-     */
+    fun init(context: Application): SkinManager {
+        SkinPreUtils.init(context)
+        mContext = context
+        return this
+    }
+
+    /** 自定义 View 时，可选择添加一个{@link SkinLayoutInflater} */
     fun addInflaters(inflater: SkinLayoutInflater): SkinManager {
         inflaters.add(inflater)
         return this
@@ -37,25 +43,30 @@ object SkinManager : SkinObserverable() {
         return inflaters
     }
 
-    fun init(context: Application): SkinManager {
-        SkinPreUtils.init(context)
-        mContext = context
+    /** 设置是否使用非继承的方式实现换肤，默认为 false */
+    fun setAutoLoadSkin(isAutoLoadSkin: Boolean): SkinManager {
+        this.isAutoLoadSkin = isAutoLoadSkin
+        return this
+    }
+
+    /** 初始化完成后必须调用 */
+    fun build() {
         startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = AbstractSkinLoadImpl()
         startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE.name] = AbstractSkinNoneLoadImpl()
         startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS.name] = AbstractSkinAssetsLoadImpl()
 
+        if (isAutoLoadSkin) mContext.registerActivityLifecycleCallbacks(SkinActivityLifecycle())
         val name = SkinPreUtils.getSkinName()
         val loadStrategyName = SkinPreUtils.getSkinStrategyName()
         if (name != null && loadStrategyName != null) {
             val loadStrategy = getStrategyType(loadStrategyName)
             if (loadStrategy != null) {
                 loadSkin(name, loadStrategy, null)
-                return this
+                return
             }
         }
         //如果没有使用皮肤，则加载策略为 SKIN_LOADER_STRATEGY_NONE
         loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null)
-        return this
     }
 
     /**
@@ -70,7 +81,7 @@ object SkinManager : SkinObserverable() {
         val loadStrategy = SkinPreUtils.getSkinStrategyName()
         if (name == skinName && skinLoadStrategy.name == loadStrategy) {
             skinLoadListener?.loadRepeat()
-            Log.e(TAG, "loadNewSkin: Do not reload the skin!")
+            Log.d(TAG, "loadNewSkin: Do not reload the skin!")
             return
         }
         loadSkin(skinName, skinLoadStrategy, skinLoadListener)
@@ -144,7 +155,7 @@ object SkinManager : SkinObserverable() {
      * @param strategy 策略名称
      * 获取加载策略
      */
-    fun getStrategyType(strategy: String): SkinLoadStrategy? {
+    private fun getStrategyType(strategy: String): SkinLoadStrategy? {
         SkinLoadStrategy.values().forEach {
             if (it.name == strategy) {
                 return it
