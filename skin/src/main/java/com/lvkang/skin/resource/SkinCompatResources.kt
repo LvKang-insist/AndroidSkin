@@ -50,6 +50,9 @@ object SkinCompatResources {
     }
 
 
+    /**
+     * 获取 String
+     */
     fun getString(resId: Int): String? {
         tryCatch {
             val string = loadStrategyAbstract.getString(context, skinName, resId)
@@ -64,6 +67,9 @@ object SkinCompatResources {
         return null
     }
 
+    /**
+     * 获取 Dimension
+     */
     fun getDimension(resId: Int): Float? {
         tryCatch {
             val float = loadStrategyAbstract.getFloat(context, skinName, resId)
@@ -79,7 +85,7 @@ object SkinCompatResources {
     }
 
     /**
-     * 通过名字获取 Drawable
+     * 获取 Drawable
      */
     fun getDrawable(resId: Int): Drawable? {
         tryCatch {
@@ -95,7 +101,7 @@ object SkinCompatResources {
         return null
     }
 
-    /** 通过名字获取颜色 */
+    /** 获取 Color */
     fun getColor(resId: Int): Int? {
         tryCatch {
             val color = loadStrategyAbstract.getColor(context, skinName, resId)
