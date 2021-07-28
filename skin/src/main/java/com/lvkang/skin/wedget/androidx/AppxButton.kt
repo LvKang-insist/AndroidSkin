@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import com.lvkang.skin.wedget.SkinCompatSupportable
+import com.lvkang.skin.wedget.helper.SkinCompatBackgroundHelper
 import com.lvkang.skin.wedget.helper.SkinCompatTextHelper
 
 /**
@@ -16,6 +17,7 @@ import com.lvkang.skin.wedget.helper.SkinCompatTextHelper
 class AppxButton : AppCompatButton, SkinCompatSupportable {
 
     private val skinTextHelper by lazy(LazyThreadSafetyMode.NONE) { SkinCompatTextHelper(this) }
+    private val mBackgroundHelper by lazy { SkinCompatBackgroundHelper(this) }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -25,9 +27,11 @@ class AppxButton : AppCompatButton, SkinCompatSupportable {
         defStyleAttr
     ) {
         skinTextHelper.loadFromAttributes(attrs, defStyleAttr)
+        mBackgroundHelper.loadFromAttributes(attrs, defStyleAttr)
     }
 
     override fun applySkin() {
         skinTextHelper.applySkin()
+        mBackgroundHelper.applySkin()
     }
 }

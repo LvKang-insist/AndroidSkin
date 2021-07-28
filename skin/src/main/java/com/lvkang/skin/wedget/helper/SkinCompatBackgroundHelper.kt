@@ -19,7 +19,7 @@ import com.lvkang.skin.wedget.SkinCompatHelper
 
 class SkinCompatBackgroundHelper(val view: View) : SkinCompatHelper() {
 
-    var backgroundResId = INVALID_ID
+    private var backgroundResId = INVALID_ID
 
     fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         obtainStyledAttributes(

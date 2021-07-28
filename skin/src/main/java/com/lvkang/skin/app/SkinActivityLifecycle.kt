@@ -28,6 +28,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     private val weekDelegateMap by lazy { WeakHashMap<Context, SkinCompateFactory>() }
     private val weekObserverMap by lazy { WeakHashMap<Context, LazySkinObserver>() }
 
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         installLayoutFactory(activity)
     }
@@ -55,6 +56,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
             val layoutInflater = LayoutInflater.from(context)
             val inflaterCompat = LayoutInflaterCompat::class.java
             val inflater = LayoutInflater::class.java
+            Log.e("---345--->", "${layoutInflater}")
 
             val sCheckedFiled = inflaterCompat.getDeclaredField("sCheckedField")
             sCheckedFiled.isAccessible = true

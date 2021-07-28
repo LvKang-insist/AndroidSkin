@@ -2,7 +2,6 @@ package com.lvkang.skin.factory
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.lvkang.skin.inflater.SkinViewInflater
@@ -15,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @name SkinCompateFactory
  * @package com.lvkang.skin.factory
  * @time 2020/11/27 23:39
- * @description
+ * @description 拦截 View 的创建
  */
 class SkinCompateFactory : LayoutInflater.Factory2 {
 

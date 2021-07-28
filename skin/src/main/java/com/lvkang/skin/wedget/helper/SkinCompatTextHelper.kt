@@ -21,7 +21,6 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
     private var sizeId = INVALID_ID
     private var textColorId = INVALID_ID
     private var textId = INVALID_ID
-    private var backgroundId = INVALID_ID
 
     fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         obtainStyledAttributes(
@@ -30,8 +29,6 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
             sizeId = it.getResourceId(R.styleable.skinTextHelper_android_textSize, INVALID_ID)
             textColorId = it.getResourceId(R.styleable.skinTextHelper_android_textColor, INVALID_ID)
             textId = it.getResourceId(R.styleable.skinTextHelper_android_text, INVALID_ID)
-            backgroundId =
-                it.getResourceId(R.styleable.skinTextHelper_android_background, INVALID_ID)
         }
         applySkin()
     }
@@ -39,7 +36,6 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
 
     override fun applySkin() {
         setSize(sizeId)
-        setBackground(backgroundId)
         setText(textId)
         setTextColor(textColorId)
     }
@@ -61,24 +57,5 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
         val size = SkinCompatResources.getDimension(res)
         size?.run { view.textSize = SkinUtils.px2dip(this) }
     }
-
-    private fun setBackground(res: Int) {
-        if (res == INVALID_ID) return
-        val drawable = SkinCompatResources.getDrawable(res)
-        drawable?.run {
-            val paddingleft = view.paddingLeft
-            val paddingTop = view.paddingTop
-            val paddingRight = view.paddingRight
-            val paddingBottom = view.paddingBottom
-            ViewCompat.setBackground(view, drawable)
-            view.setPadding(paddingleft, paddingTop, paddingRight, paddingBottom)
-            return@run
-        }
-        val color = SkinCompatResources.getColor(res)
-        color?.run {
-            view.setBackgroundColor(color)
-        }
-    }
-
 
 }

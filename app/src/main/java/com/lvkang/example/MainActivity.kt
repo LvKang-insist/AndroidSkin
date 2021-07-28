@@ -2,14 +2,17 @@ package com.lvkang.example
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.SparseArray
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.lvkang.skin.SkinManager
+import com.lvkang.skin.app.SkinCompatActivity
 import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.resource.SkinLoadStrategy
+import java.util.concurrent.ThreadPoolExecutor
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : SkinCompatActivity() {
 
     private val TAG = "MainActivity"
 
@@ -46,3 +49,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
+

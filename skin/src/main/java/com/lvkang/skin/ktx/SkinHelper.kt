@@ -16,13 +16,13 @@ import java.lang.Exception
  * @description
  */
 
-fun obtainStyledAttributes(
+inline fun obtainStyledAttributes(
     view: View,
     set: AttributeSet?,
     @StyleableRes attrs: IntArray,
     @AttrRes defstyleAttr: Int,
     @StyleRes defStyleRes: Int,
-    block: (TypedArray) -> Unit
+    crossinline block: (TypedArray) -> Unit
 ) {
     val a =
         view.context.obtainStyledAttributes(set, attrs, defstyleAttr, defStyleRes)
@@ -30,7 +30,7 @@ fun obtainStyledAttributes(
     a.recycle()
 }
 
-fun tryCache(block: () -> Unit) {
+inline fun tryCache(block: () -> Unit) {
     try {
         block()
     } catch (e: Exception) {
