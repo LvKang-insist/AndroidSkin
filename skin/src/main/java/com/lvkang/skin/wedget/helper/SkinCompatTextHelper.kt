@@ -2,10 +2,9 @@ package com.lvkang.skin.wedget.helper
 
 import android.util.AttributeSet
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import com.lvkang.skin.R
-import com.lvkang.skin.config.SkinUtils
 import com.lvkang.skin.ktx.obtainStyledAttributes
+import com.lvkang.skin.ktx.px2dip
 import com.lvkang.skin.resource.SkinCompatResources
 import com.lvkang.skin.util.SkinLog
 import com.lvkang.skin.wedget.SkinCompatHelper
@@ -57,7 +56,7 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
         if (res == INVALID_ID) return
         val size = SkinCompatResources.getDimension(res)
         SkinLog.log("------ $size")
-        size?.run { view.textSize = SkinUtils.px2dip(this) }
+        size?.run { view.textSize = px2dip(this) }
     }
 
 }

@@ -13,20 +13,13 @@ import com.lvkang.skin.resource.SkinLoadStrategy
  * @package com.lvkang.skin.resource.strategy
  * @author 345 QQ:1831712732
  * @time 2020/12/07 22:22
- * @description
+ * @description 默认加载策略，即不加载任何皮肤
  */
 class AbstractSkinNoneLoadImpl : AbstractSkinLoadStrategy() {
-    override fun loadSkin(skinName: String): String? {
+    override fun loadSkin(path: String): String {
         SkinCompatResources.resetSkin(SkinManager.getContext().resources, this)
         return ""
     }
 
     override fun getType(): SkinLoadStrategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE
-    override fun getColor(context: Context, skinName: String, resId: Int): Int {
-        return ResourcesCompat.getColor(context.resources, resId, null)
-    }
-
-    override fun getDrawable(context: Context, skinName: String, resId: Int): Drawable? {
-        return ResourcesCompat.getDrawable(context.resources, resId, null)
-    }
 }

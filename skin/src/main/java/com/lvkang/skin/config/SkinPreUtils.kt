@@ -1,8 +1,10 @@
 package com.lvkang.skin.config
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import com.lvkang.skin.SkinManager
 import java.io.File
 
 
@@ -16,22 +18,25 @@ import java.io.File
 @SuppressLint("StaticFieldLeak")
 object SkinPreUtils {
 
-    lateinit var context: Context
-    fun init(context: Context) {
-        SkinPreUtils.context = context
-        saveSkinCacheDir("${context.cacheDir.path}${File.separator}")
-    }
+    private val context by lazy { SkinManager.getApplication() }
 
-    fun saveSkinCacheDir(cacheDir: String) {
+    private val skinDir by lazy { "${context.getExternalFilesDir("file")}${File.separator}" }
+
+
+    /**
+     * 保存当前皮肤路径
+     */
+    private fun saveSkinPath(skinPath: String?) {
         context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putString(SkinConfig.SKIN_DIR, cacheDir)
+            .putString(SkinConfig.SKIN_DIR_PATH, skinPath)
             .apply()
     }
 
+
     fun getSkinCacheDir(): String {
         return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .getString(SkinConfig.SKIN_PATH, "${context.cacheDir.path}${File.separator}")!!
+            .getString(SkinConfig.SKIN_DIR_PATH, skinDir)!!
     }
 
     /**
@@ -46,24 +51,6 @@ object SkinPreUtils {
         saveSkinStrategy(skinStrategy)
     }
 
-
-    /**
-     * 保存当前皮肤路径
-     */
-    private fun saveSkinPath(skinPath: String?) {
-        context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(SkinConfig.SKIN_PATH, skinPath)
-            .apply()
-    }
-
-    /**
-     * 返回当前皮肤路径
-     */
-    fun getSkinPath(): String? {
-        return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .getString(SkinConfig.SKIN_PATH, null)
-    }
 
     /**
      * 保存当前皮肤名称
@@ -97,7 +84,7 @@ object SkinPreUtils {
     /**
      * 获取当前皮肤加载策略
      */
-    fun getSkinStrategyName(): String? {
+    fun getSkinStrategy(): String? {
         return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .getString(SkinConfig.SKIN_STRATEGY, null)
     }

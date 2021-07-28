@@ -1,8 +1,6 @@
 package com.lvkang.skin.resource.strategy
 
 import com.lvkang.skin.SkinManager
-import com.lvkang.skin.config.SkinUtils
-import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.resource.AbstractSkinLoadStrategy
 import com.lvkang.skin.resource.SkinCompatResources
 import com.lvkang.skin.resource.SkinLoadStrategy
@@ -14,15 +12,14 @@ import com.lvkang.skin.resource.SkinLoadStrategy
  * @time 2020/12/07 22:27
  * @description
  */
-class AbstractSkinLoadImpl : AbstractSkinLoadStrategy() {
+class AbstractSkinLoadStorageImpl : AbstractSkinLoadStrategy() {
 
-    override fun loadSkin(skinName: String): String? {
-        val skinPath = SkinPreUtils.getSkinCacheDir() + skinName
-        val resource = SkinManager.getSkinResources(skinPath)
-        val packageName = SkinUtils.getSkinPackageName(skinPath)
+    override fun loadSkin(path: String): String? {
+        val resource = SkinCompatResources.getSkinResources(path)
+        val packageName = SkinCompatResources.getSkinPackageName(path)
         if (resource != null && packageName != null) {
-            SkinCompatResources.setupSkin(resource, packageName, skinName, this)
-            return SkinPreUtils.getSkinCacheDir()
+            SkinCompatResources.setupSkin(resource, packageName, path, this)
+            return path
         }
         return null
     }

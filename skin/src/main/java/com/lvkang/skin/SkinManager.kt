@@ -10,13 +10,15 @@ import com.lvkang.skin.app.SkinActivityLifecycle
 import com.lvkang.skin.config.SkinConfig.SKIN_LOAD_ERROR
 import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.inflater.SkinLayoutInflater
+import com.lvkang.skin.ktx.pathName
 import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.obsreve.SkinObserverable
 import com.lvkang.skin.resource.*
 import com.lvkang.skin.resource.SkinLoadStrategy
 import com.lvkang.skin.resource.strategy.AbstractSkinAssetsLoadImpl
-import com.lvkang.skin.resource.strategy.AbstractSkinLoadImpl
+import com.lvkang.skin.resource.strategy.AbstractSkinLoadStorageImpl
 import com.lvkang.skin.resource.strategy.AbstractSkinNoneLoadImpl
+import com.lvkang.skin.util.SkinLog
 import kotlinx.coroutines.*
 import java.lang.Exception
 
@@ -24,14 +26,13 @@ import java.lang.Exception
 object SkinManager : SkinObserverable() {
 
     private const val TAG = "SkinManager"
-    private lateinit var mContext: Application
+    private lateinit var application: Application
     private val inflaters = arrayListOf<SkinLayoutInflater>()
     private val startegy = mutableMapOf<String, AbstractSkinLoadStrategy>()
     private var isAutoLoadSkin = false
 
     fun init(context: Application): SkinManager {
-        SkinPreUtils.init(context)
-        mContext = context
+        application = context
         return this
     }
 
@@ -54,69 +55,76 @@ object SkinManager : SkinObserverable() {
 
     /** 初始化完成后必须调用 */
     fun build() {
-        startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = AbstractSkinLoadImpl()
+        startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = AbstractSkinLoadStorageImpl()
         startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE.name] = AbstractSkinNoneLoadImpl()
         startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS.name] = AbstractSkinAssetsLoadImpl()
 
-        if (isAutoLoadSkin) mContext.registerActivityLifecycleCallbacks(SkinActivityLifecycle())
+        if (isAutoLoadSkin) application.registerActivityLifecycleCallbacks(SkinActivityLifecycle())
         val name = SkinPreUtils.getSkinName()
-        val loadStrategyName = SkinPreUtils.getSkinStrategyName()
-        if (name != null && loadStrategyName != null) {
-            val loadStrategy = getStrategyType(loadStrategyName)
-            if (loadStrategy != null) {
-                loadSkin(name, loadStrategy, null)
+        val loadStrategy = SkinPreUtils.getSkinStrategy()
+        if (name != null && loadStrategy != null) {
+            val strategy = getStrategyType(loadStrategy)
+            if (strategy != null) {
+                loadSkin(strategy, name, null)
                 return
             }
         }
         //如果没有使用皮肤，则加载策略为 SKIN_LOADER_STRATEGY_NONE
-        loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null)
+        loadSkin(SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null, null)
     }
 
     /**
      * 加载新皮肤
+     * @param skinPath 皮肤的名字或路径，当策略为 SKIN_LOADER_STRATEGY_ASSETS 时，传入 name 即可
      */
     fun loadNewSkin(
-        skinName: String,
-        skinLoadStrategy: SkinLoadStrategy,
+        strategy: SkinLoadStrategy,
+        skinPath: String? = null,
         skinLoadListener: SkinLoadListener? = null
     ) {
         val name = SkinPreUtils.getSkinName()
-        val loadStrategy = SkinPreUtils.getSkinStrategyName()
-        if (name == skinName && skinLoadStrategy.name == loadStrategy) {
+        val loadStrategy = SkinPreUtils.getSkinStrategy()
+        if (name == skinPath && strategy.name == loadStrategy) {
             skinLoadListener?.loadRepeat()
-            Log.d(TAG, "loadNewSkin: Do not reload the skin!")
+            SkinLog.log("Do not reload the skin!")
             return
         }
-        loadSkin(skinName, skinLoadStrategy, skinLoadListener)
+        loadSkin(strategy, skinPath, skinLoadListener)
     }
 
     private fun loadSkin(
-        skinName: String,
-        skinLoadStrategy: SkinLoadStrategy,
+        strategy: SkinLoadStrategy,
+        path: String? = null,
         skinLoadListener: SkinLoadListener? = null
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val skinLoaderStrategy = startegy[skinLoadStrategy.name]
-                val skinPath = skinLoaderStrategy?.loadSkin(skinName)
-                launch(Dispatchers.Main) {
-                    when {
-                        skinPath == null -> {
-                            Log.e(TAG, "loadSkin: The skin resource failed to load!")
-                            skinLoadListener?.loadSkinFailure(SKIN_LOAD_ERROR)
-                        }
-                        skinPath.isNotEmpty() -> {
-                            //改变皮肤
-                            notifyUpdateSkin()
-                            //保存皮肤的状态
-                            SkinPreUtils.saveSkinStatus(skinPath, skinName, skinLoadStrategy.name)
-                            skinLoadListener?.loadSkinSucess()
-                        }
-                        skinPath.isEmpty() -> {
-                            //length==0 ，表示策略为 SKIN_LOADER_STRATEGY_NONE，只需要刷新即可
+                val skinLoaderStrategy = startegy[strategy.name]
+                when (strategy) {
+                    SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE -> {
+                        launch(Dispatchers.Main) {
                             skinLoadListener?.loadSkinSucess()
                             notifyUpdateSkin()
                         }
+                    }
+                    SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
+                    SkinLoadStrategy.SKIN_LOADER_STARTEGY -> {
+                        path?.run {
+                            val skinPath = skinLoaderStrategy?.loadSkin(this)
+                            launch(Dispatchers.Main) {
+                                if (skinPath != null) {
+                                    notifyUpdateSkin()
+                                    SkinPreUtils.saveSkinStatus(
+                                        skinPath,
+                                        pathName(skinPath),
+                                        strategy.name
+                                    )
+                                    skinLoadListener?.loadSkinSucess()
+                                } else {
+                                    skinLoadListener?.loadSkinFailure(SKIN_LOAD_ERROR)
+                                }
+                            }
+                        } ?: throw Resources.NotFoundException("Not Font path")
                     }
                 }
             } catch (e: Exception) {
@@ -136,7 +144,7 @@ object SkinManager : SkinObserverable() {
      * 恢复默认
      */
     fun restoreDefault() {
-        loadSkin("", SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, object : SkinLoadListener {
+        loadSkin(SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE, null, object : SkinLoadListener {
             override fun loadSkinSucess() {
                 SkinPreUtils.clearSkinInfo()
             }
@@ -145,6 +153,10 @@ object SkinManager : SkinObserverable() {
 
             override fun loadRepeat() = Unit
         })
+    }
+
+    fun getApplication(): Application {
+        return application
     }
 
     /**
@@ -167,26 +179,9 @@ object SkinManager : SkinObserverable() {
         return null
     }
 
-    /**
-     * 获取皮肤 resources
-     */
-    @SuppressLint("DiscouragedPrivateApi")
-    fun getSkinResources(skinPath: String): Resources? {
-        return try {
-            val superRes = mContext.resources
-            val asset = AssetManager::class.java.newInstance()
-            val method =
-                AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
-            method.invoke(asset, skinPath)
-            Resources(asset, superRes.displayMetrics, superRes.configuration)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
 
     fun getContext(): Context {
-        return mContext
+        return application
     }
 
 }

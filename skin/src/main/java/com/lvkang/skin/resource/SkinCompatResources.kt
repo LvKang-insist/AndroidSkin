@@ -1,11 +1,13 @@
 package com.lvkang.skin.resource
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
+import com.lvkang.skin.ktx.tryCatch
 import com.lvkang.skin.util.SkinLog
 
 /**
@@ -137,12 +139,31 @@ object SkinCompatResources {
         }
     }
 
-    private inline fun <T> tryCatch(block: () -> T): T? {
+    /** 获取皮肤包 resources */
+    @SuppressLint("DiscouragedPrivateApi")
+    fun getSkinResources(skinPath: String): Resources? {
         return try {
-            block()
+            val superRes = SkinManager.getApplication().resources
+            val asset = AssetManager::class.java.newInstance()
+            val method =
+                AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+            method.invoke(asset, skinPath)
+            Resources(asset, superRes.displayMetrics, superRes.configuration)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             null
         }
     }
+
+    /**
+     * 获取皮肤包名
+     */
+    fun getSkinPackageName(skinPath: String): String? {
+        return SkinManager.getContext().packageManager.getPackageArchiveInfo(
+            skinPath,
+            PackageManager.GET_ACTIVITIES
+        )?.packageName
+    }
+
+
 }

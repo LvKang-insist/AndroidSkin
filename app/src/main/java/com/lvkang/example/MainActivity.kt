@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             SkinManager.loadNewSkin(
-                "skin.apk",
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
+                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
+                "skin.apk"
             )
         }
         findViewById<View>(R.id.button1).setOnClickListener {
@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             SkinManager.loadNewSkin(
+                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
                 "skin1.apk",
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
             )
         }
 
@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             SkinManager.loadNewSkin(
-                "skin2.apk",
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
+                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
+                "skin2.apk"
             )
         }
 
@@ -63,8 +63,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             SkinManager.loadNewSkin(
-                "skin3.apk",
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
+                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
+                "skin3.apk"
             )
         }
 
