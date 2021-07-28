@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AndroidSkin</string>
-    <string name="skinName">黑夜模式</string>
+    <string name="skin_main_button_text">点击换肤</string>
+    <string name="skin_main_text_text">跳转</string>
 </resources>

@@ -2,11 +2,13 @@ package com.lvkang.skin.inflater
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import com.lvkang.skin.wedget.androidx.AppxButton
-import com.lvkang.skin.wedget.androidx.AppxImageView
-import com.lvkang.skin.wedget.androidx.AppxSkinView
+import androidx.appcompat.widget.LinearLayoutCompat
+import com.lvkang.skin.util.SkinLog
+import com.lvkang.skin.wedget.android.FrameLayoutX
+import com.lvkang.skin.wedget.android.RelativeLayoutX
+import com.lvkang.skin.wedget.android.ViewX
+import com.lvkang.skin.wedget.androidx.*
 
 /**
  * @name SkinAppCompatViewInflater
@@ -23,13 +25,29 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
     }
 
     private fun createViewFrom(context: Context, name: String, attres: AttributeSet): View? {
-        var view: View? = null
+        SkinLog.log(name)
         when (name) {
-            "View" -> view = AppxSkinView(context, attres)
-            "androidx.appcompat.widget.AppCompatImageView" -> view = AppxImageView(context, attres)
-            "androidx.appcompat.widget.AppCompatButton" -> view = AppxButton(context, attres)
+            "View" -> return ViewX(context, attres)
+            "ImageView" -> return ImageViewX(context, attres)
+            "Button" -> return ButtonX(context, attres)
+            "TextView" -> return TextViewX(context, attres)
+            "FrameLayout" -> return FrameLayoutX(context, attres)
+            "RelativeLayout" -> return RelativeLayoutX(context, attres)
+            "ScrollView" -> return NestedScrollViewX(context, attres)
+            "androidx.appcompat.widget.AppCompatImageView" -> return ImageViewX(context, attres)
+            "androidx.appcompat.widget.AppCompatButton" -> return ButtonX(context, attres)
+            "androidx.appcompat.widget.AppCompatTextView" -> return TextViewX(context, attres)
+            "androidx.appcompat.widget.NestedScrollView" -> {
+                return NestedScrollViewX(context, attres)
+            }
+            "androidx.constraintlayout.widget.ConstraintLayout" -> {
+                return ConstraintLayoutX(context, attres)
+            }
+            "androidx.appcompat.widget.LinearLayoutCompat" -> {
+                return LinearLayoutCompat(context, attres)
+            }
         }
 
-        return view
+        return null
     }
 }
