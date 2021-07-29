@@ -1,9 +1,7 @@
 package com.lvkang.skin.config
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.widget.Toast
 import com.lvkang.skin.SkinManager
 import java.io.File
 
@@ -27,16 +25,16 @@ object SkinPreUtils {
      * 保存当前皮肤路径
      */
     private fun saveSkinPath(skinPath: String?) {
-        context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putString(SkinConfig.SKIN_DIR_PATH, skinPath)
+            .putString(SkinKey.SKIN_DIR_PATH, skinPath)
             .apply()
     }
 
 
-    fun getSkinCacheDir(): String {
-        return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .getString(SkinConfig.SKIN_DIR_PATH, skinDir)!!
+    fun getSkinPath(): String {
+        return context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+            .getString(SkinKey.SKIN_DIR_PATH, skinDir)!!
     }
 
     /**
@@ -56,9 +54,9 @@ object SkinPreUtils {
      * 保存当前皮肤名称
      */
     private fun saveSkinName(skinName: String?) {
-        context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putString(SkinConfig.SKIN_NAME, skinName)
+            .putString(SkinKey.SKIN_NAME, skinName)
             .apply()
     }
 
@@ -66,8 +64,8 @@ object SkinPreUtils {
      * 获取当前皮肤名称
      */
     fun getSkinName(): String? {
-        return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .getString(SkinConfig.SKIN_NAME, null)
+        return context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+            .getString(SkinKey.SKIN_NAME, null)
     }
 
 
@@ -75,9 +73,9 @@ object SkinPreUtils {
      * 保存当前皮肤加载策略
      */
     private fun saveSkinStrategy(skinStrategy: String?) {
-        context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putString(SkinConfig.SKIN_STRATEGY, skinStrategy)
+            .putString(SkinKey.SKIN_STRATEGY, skinStrategy)
             .apply()
     }
 
@@ -85,8 +83,8 @@ object SkinPreUtils {
      * 获取当前皮肤加载策略
      */
     fun getSkinStrategy(): String? {
-        return context.getSharedPreferences(SkinConfig.SKIN_INFO_NAME, Context.MODE_PRIVATE)
-            .getString(SkinConfig.SKIN_STRATEGY, null)
+        return context.getSharedPreferences(SkinKey.SKIN_INFO_NAME, Context.MODE_PRIVATE)
+            .getString(SkinKey.SKIN_STRATEGY, null)
     }
 
     /**
@@ -102,9 +100,9 @@ object SkinPreUtils {
      * 添加一个标记
      */
     fun setTag(boolean: Boolean) {
-        context.getSharedPreferences(SkinConfig.TAG, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SkinKey.TAG, Context.MODE_PRIVATE)
             .edit()
-            .putBoolean(SkinConfig.TAG, boolean)
+            .putBoolean(SkinKey.TAG, boolean)
             .apply()
     }
 
@@ -112,7 +110,7 @@ object SkinPreUtils {
      * 获取标记
      */
     fun getTag(): Boolean {
-        return context.getSharedPreferences(SkinConfig.TAG, Context.MODE_PRIVATE)
-            .getBoolean(SkinConfig.TAG, false)
+        return context.getSharedPreferences(SkinKey.TAG, Context.MODE_PRIVATE)
+            .getBoolean(SkinKey.TAG, false)
     }
 }

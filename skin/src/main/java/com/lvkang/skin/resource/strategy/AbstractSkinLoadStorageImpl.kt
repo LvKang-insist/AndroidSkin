@@ -10,7 +10,7 @@ import com.lvkang.skin.resource.SkinLoadStrategy
  * @package ccom.lvkang.skin.resource.strategy
  * @author 345 QQ:1831712732
  * @time 2020/12/07 22:27
- * @description
+ * @description 内部存储加载策略
  */
 class AbstractSkinLoadStorageImpl : AbstractSkinLoadStrategy() {
 

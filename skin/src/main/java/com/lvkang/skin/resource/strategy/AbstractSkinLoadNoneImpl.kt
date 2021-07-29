@@ -15,10 +15,10 @@ import com.lvkang.skin.resource.SkinLoadStrategy
  * @time 2020/12/07 22:22
  * @description 默认加载策略，即不加载任何皮肤
  */
-class AbstractSkinNoneLoadImpl : AbstractSkinLoadStrategy() {
-    override fun loadSkin(path: String): String {
+class AbstractSkinLoadNoneImpl : AbstractSkinLoadStrategy() {
+    override fun loadSkin(path: String): String? {
         SkinCompatResources.resetSkin(SkinManager.getContext().resources, this)
-        return ""
+        return null
     }
 
     override fun getType(): SkinLoadStrategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE

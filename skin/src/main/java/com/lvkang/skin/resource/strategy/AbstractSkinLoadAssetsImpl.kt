@@ -16,7 +16,7 @@ import java.io.IOException
  * @description Assets 加载策略，即 Assets 目录下的皮肤包
  */
 
-class AbstractSkinAssetsLoadImpl : AbstractSkinLoadStrategy() {
+class AbstractSkinLoadAssetsImpl : AbstractSkinLoadStrategy() {
 
     override fun loadSkin(path: String): String? {
         val skinPath = copyCache(

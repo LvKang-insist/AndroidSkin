@@ -22,50 +22,23 @@ class MainActivity : AppCompatActivity() {
 
         val view = findViewById<View>(R.id.button)
         view.setOnClickListener {
-            if (!SkinManager.getIsDefault()) {
-                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
-                SkinManager.restoreDefault()
-                return@setOnClickListener
-            }
-            SkinManager.loadNewSkin(
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
-                "skin.apk"
-            )
+            SkinManager.loadAssetsSkin("skin.apk")
         }
         findViewById<View>(R.id.button1).setOnClickListener {
-            if (!SkinManager.getIsDefault()) {
-                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
-                SkinManager.restoreDefault()
-                return@setOnClickListener
-            }
-            SkinManager.loadNewSkin(
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
-                "skin1.apk",
-            )
+            SkinManager.loadAssetsSkin("skin1.apk")
+
         }
 
         findViewById<View>(R.id.button2).setOnClickListener {
-            if (!SkinManager.getIsDefault()) {
-                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
-                SkinManager.restoreDefault()
-                return@setOnClickListener
-            }
-            SkinManager.loadNewSkin(
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
-                "skin2.apk"
-            )
+            SkinManager.loadAssetsSkin("skin2.apk")
         }
 
         findViewById<View>(R.id.button3).setOnClickListener {
-            if (!SkinManager.getIsDefault()) {
-                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
-                SkinManager.restoreDefault()
-                return@setOnClickListener
-            }
-            SkinManager.loadNewSkin(
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
-                "skin3.apk"
-            )
+            SkinManager.loadAssetsSkin("skin3.apk")
+        }
+
+        findViewById<View>(R.id.none).setOnClickListener {
+            SkinManager.loadNone()
         }
 
         findViewById<View>(R.id.next).setOnClickListener {

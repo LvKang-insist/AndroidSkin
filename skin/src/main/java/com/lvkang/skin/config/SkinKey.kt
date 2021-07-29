@@ -7,7 +7,7 @@ package com.lvkang.skin.config
  * @time 2020/11/24 23:31
  * @description
  */
-object SkinConfig {
+object SkinKey {
 
     const val TAG = "tag"
 
@@ -16,14 +16,10 @@ object SkinConfig {
     /** 皮肤缓存 DirPath */
     const val SKIN_DIR_PATH = "skin_dir_path"
 
-    //保存文件皮肤 name 的 key
+    /** 皮肤名字 */
     const val SKIN_NAME = "skin_name"
 
-    //保存文件皮肤 strategy 的 key
+    /** 皮肤加载策略 */
     const val SKIN_STRATEGY = "skin_strategy"
-
-    /** 加载皮肤失败 */
-    const val SKIN_LOAD_ERROR = "ERROR"
-
 
 }

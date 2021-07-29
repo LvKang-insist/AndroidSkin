@@ -131,7 +131,6 @@ object SkinCompatResources {
                     resId
                 )
             val resType = context.resources.getResourceTypeName(resId)
-            SkinLog.log("$resName  $resType")
             resources.getIdentifier(resName, resType, packageName)
         } catch (e: Exception) {
             SkinLog.log(e.message ?: "Not Font resId $resId")
