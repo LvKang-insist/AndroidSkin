@@ -12,7 +12,7 @@ import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.resource.SkinLoadStrategy
 import java.util.concurrent.ThreadPoolExecutor
 
-class MainActivity : SkinCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
@@ -22,28 +22,25 @@ class MainActivity : SkinCompatActivity() {
 
         val view = findViewById<View>(R.id.button)
         view.setOnClickListener {
-            if (!SkinManager.getIsDefault()) {
-                Toast.makeText(this@MainActivity, "切換至默認", Toast.LENGTH_SHORT).show()
-                SkinManager.restoreDefault()
-                return@setOnClickListener
-            }
-            SkinManager.loadNewSkin(
-                "skinHome.skin",
-                SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS,
-                object : SkinLoadListener {
-                    override fun loadSkinSucess() {
-                        Toast.makeText(this@MainActivity, "皮肤资源加载成功", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun loadSkinFailure(error: String) {
-                        Toast.makeText(this@MainActivity, "加载失败", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun loadRepeat() {
-                        Toast.makeText(this@MainActivity, "重复加载", Toast.LENGTH_SHORT).show()
-                    }
-                })
+            SkinManager.loadAssetsSkin("skin.apk")
         }
+        findViewById<View>(R.id.button1).setOnClickListener {
+            SkinManager.loadAssetsSkin("skin1.apk")
+
+        }
+
+        findViewById<View>(R.id.button2).setOnClickListener {
+            SkinManager.loadAssetsSkin("skin2.apk")
+        }
+
+        findViewById<View>(R.id.button3).setOnClickListener {
+            SkinManager.loadAssetsSkin("skin3.apk")
+        }
+
+        findViewById<View>(R.id.none).setOnClickListener {
+            SkinManager.loadNone()
+        }
+
         findViewById<View>(R.id.next).setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
         }

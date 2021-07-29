@@ -8,7 +8,13 @@ package com.lvkang.skin.resource
  * @description
  */
 enum class SkinLoadStrategy {
-    SKIN_LOADER_STARTEGY,
+
+    /** 默认加载策略，即没有换肤效果 */
     SKIN_LOADER_STRATEGY_NONE,
+
+    /** 内部存储加载策略 */
+    SKIN_LOADER_STARTEGY,
+
+    /** Assets 加载策略 */
     SKIN_LOADER_STRATEGY_ASSETS,
 }

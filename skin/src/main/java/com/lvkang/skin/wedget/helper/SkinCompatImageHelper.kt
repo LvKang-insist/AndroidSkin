@@ -40,7 +40,7 @@ class SkinCompatImageHelper(val view: AppCompatImageView) : SkinCompatHelper() {
     private fun setImage(res: Int) {
         if (res == INVALID_ID) return
         val drawable = SkinCompatResources.getDrawable(res)
-        drawable?.run {
+        if (drawable != null) {
             val paddingleft = view.paddingLeft
             val paddingTop = view.paddingTop
             val paddingRight = view.paddingRight

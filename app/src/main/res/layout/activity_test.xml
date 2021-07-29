@@ -6,6 +6,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/draw" />
+        android:background="@drawable/skin_main_background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

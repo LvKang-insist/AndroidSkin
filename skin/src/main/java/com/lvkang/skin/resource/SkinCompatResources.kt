@@ -1,10 +1,14 @@
 package com.lvkang.skin.resource
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
+import com.lvkang.skin.ktx.tryCatch
+import com.lvkang.skin.util.SkinLog
 
 /**
  * @name SkinResource
@@ -60,9 +64,10 @@ object SkinCompatResources {
             if (!isDefaultSkin) {
                 val skinResId = getSkinResId(resId)
                 if (skinResId != NOT_ID)
-                    return resources.getString(resId)
+                    return resources.getString(skinResId)
+            } else {
+                return context.resources.getString(resId)
             }
-            return context.resources.getString(resId)
         }
         return null
     }
@@ -78,8 +83,9 @@ object SkinCompatResources {
                 val skinResId = getSkinResId(resId)
                 if (skinResId != NOT_ID)
                     return resources.getDimension(skinResId)
+            } else {
+                return context.resources.getDimension(resId)
             }
-            return context.resources.getDimension(resId)
         }
         return null
     }
@@ -95,8 +101,9 @@ object SkinCompatResources {
                 val skinResId = getSkinResId(resId)
                 if (skinResId != NOT_ID)
                     return ResourcesCompat.getDrawable(resources, skinResId, null)
+            } else {
+                return ResourcesCompat.getDrawable(context.resources, resId, null)
             }
-            return ResourcesCompat.getDrawable(context.resources, resId, null)
         }
         return null
     }
@@ -110,24 +117,52 @@ object SkinCompatResources {
                 val skinResId = getSkinResId(resId)
                 if (skinResId != NOT_ID)
                     return ResourcesCompat.getColor(resources, skinResId, null)
+            } else {
+                return ResourcesCompat.getColor(context.resources, resId, null)
             }
-            return ResourcesCompat.getColor(context.resources, resId, null)
         }
         return null
     }
 
     private fun getSkinResId(resId: Int): Int {
-        val resName = loadStrategyAbstract.getSkinResName() ?: resources.getResourceEntryName(resId)
-        val resType = resources.getResourceTypeName(resId)
-        return resources.getIdentifier(resName, resType, packageName)
+        return try {
+            val resName =
+                loadStrategyAbstract.getSkinResName() ?: context.resources.getResourceEntryName(
+                    resId
+                )
+            val resType = context.resources.getResourceTypeName(resId)
+            resources.getIdentifier(resName, resType, packageName)
+        } catch (e: Exception) {
+            SkinLog.log(e.message ?: "Not Font resId $resId")
+            NOT_ID
+        }
     }
 
-    private inline fun <T> tryCatch(block: () -> T): T? {
+    /** 获取皮肤包 resources */
+    @SuppressLint("DiscouragedPrivateApi")
+    fun getSkinResources(skinPath: String): Resources? {
         return try {
-            block()
+            val superRes = SkinManager.getApplication().resources
+            val asset = AssetManager::class.java.newInstance()
+            val method =
+                AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+            method.invoke(asset, skinPath)
+            Resources(asset, superRes.displayMetrics, superRes.configuration)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             null
         }
     }
+
+    /**
+     * 获取皮肤包名
+     */
+    fun getSkinPackageName(skinPath: String): String? {
+        return SkinManager.getContext().packageManager.getPackageArchiveInfo(
+            skinPath,
+            PackageManager.GET_ACTIVITIES
+        )?.packageName
+    }
+
+
 }

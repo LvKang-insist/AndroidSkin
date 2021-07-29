@@ -2,11 +2,11 @@ package com.lvkang.skin.wedget.helper
 
 import android.util.AttributeSet
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import com.lvkang.skin.R
-import com.lvkang.skin.config.SkinUtils
 import com.lvkang.skin.ktx.obtainStyledAttributes
+import com.lvkang.skin.ktx.px2dip
 import com.lvkang.skin.resource.SkinCompatResources
+import com.lvkang.skin.util.SkinLog
 import com.lvkang.skin.wedget.SkinCompatHelper
 
 /**
@@ -43,7 +43,7 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
     private fun setText(res: Int) {
         if (res == INVALID_ID) return
         val string = SkinCompatResources.getString(res)
-        string.run { view.text = string }
+        string?.run { view.text = string }
     }
 
     private fun setTextColor(res: Int) {
@@ -55,7 +55,8 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
     private fun setSize(res: Int) {
         if (res == INVALID_ID) return
         val size = SkinCompatResources.getDimension(res)
-        size?.run { view.textSize = SkinUtils.px2dip(this) }
+        SkinLog.log("------ $size")
+        size?.run { view.textSize = px2dip(this) }
     }
 
 }

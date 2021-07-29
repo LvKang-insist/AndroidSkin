@@ -3,7 +3,6 @@ package com.lvkang.example
 import android.app.Application
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.inflater.SkinAppCompatViewInflater
-import com.lvkang.skin.inflater.SkinAppSupportViewInflater
 
 /**
  * @name BaseActivity
@@ -18,8 +17,7 @@ class BaseApplication : Application() {
         super.onCreate()
         SkinManager.init(this)
             .addInflaters(SkinAppCompatViewInflater())
-            .addInflaters(SkinAppSupportViewInflater())
-            .setAutoLoadSkin(false)
+            .setAutoLoadSkin(true)
             .build()
     }
 }
