@@ -9,10 +9,11 @@ import com.lvkang.skin.ktx.pathName
 import com.lvkang.skin.listener.SkinLoadListener
 import com.lvkang.skin.obsreve.SkinObserverable
 import com.lvkang.skin.resource.*
-import com.lvkang.skin.resource.SkinLoadStrategy
+import com.lvkang.skin.resource.SkinLoadStrategyEnum
 import com.lvkang.skin.resource.strategy.AbstractSkinLoadAssetsImpl
 import com.lvkang.skin.resource.strategy.AbstractSkinLoadStorageImpl
 import com.lvkang.skin.resource.strategy.AbstractSkinLoadNoneImpl
+import com.lvkang.skin.resource.strategy.AbstractSkinLoadZipImpl
 import com.lvkang.skin.util.SkinLog
 import kotlinx.coroutines.*
 
@@ -22,7 +23,7 @@ object SkinManager : SkinObserverable() {
     private lateinit var application: Application
     private val inflaters = arrayListOf<SkinLayoutInflater>()
     private val startegy = mutableMapOf<String, AbstractSkinLoadStrategy>()
-    private var isAutoLoadSkin = false
+    private var isAutoLoadSkin = true
 
     fun init(context: Application): SkinManager {
         application = context
@@ -48,9 +49,11 @@ object SkinManager : SkinObserverable() {
 
     /** 初始化完成后必须调用 */
     fun build() {
-        startegy[SkinLoadStrategy.SKIN_LOADER_STARTEGY.name] = AbstractSkinLoadStorageImpl()
-        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE.name] = AbstractSkinLoadNoneImpl()
-        startegy[SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS.name] = AbstractSkinLoadAssetsImpl()
+        startegy[SkinLoadStrategyEnum.SKIN_LOADER_STARTEGY_STORAGE.name] = AbstractSkinLoadStorageImpl()
+        startegy[SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_NONE.name] = AbstractSkinLoadNoneImpl()
+        startegy[SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ASSETS.name] =
+            AbstractSkinLoadAssetsImpl()
+        startegy[SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ZIP.name] = AbstractSkinLoadZipImpl()
 
         if (isAutoLoadSkin) application.registerActivityLifecycleCallbacks(SkinActivityLifecycle())
         val name = SkinPreUtils.getSkinName()
@@ -60,11 +63,16 @@ object SkinManager : SkinObserverable() {
             val strategy = getStrategyType(loadStrategy)
             if (strategy != null) {
                 when (strategy) {
-                    SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE -> loadNone()
-                    SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS -> {
+                    SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_NONE -> loadNone()
+                    SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ASSETS -> {
                         loadAssetsSkin(name, isRepeat = true)
                     }
-                    SkinLoadStrategy.SKIN_LOADER_STARTEGY -> loadStorage(path, isRepeat = true)
+                    SkinLoadStrategyEnum.SKIN_LOADER_STARTEGY_STORAGE -> {
+                        loadStorageSkin(path, isRepeat = true)
+                    }
+                    SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ZIP -> {
+                        loadZipSkin(path, isRepeat = true)
+                    }
                 }
                 return
             }
@@ -76,7 +84,7 @@ object SkinManager : SkinObserverable() {
     /** 加载默认皮肤 ，即无皮肤 */
     fun loadNone(skinLoadListener: SkinLoadListener? = null) {
         val none = "none"
-        val strategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE
+        val strategy = SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_NONE
         val skinLoaderStrategy = startegy[strategy.name]
         skinLoaderStrategy?.loadSkin(none)
         loadSkin(none, none, strategy, skinLoadListener)
@@ -91,9 +99,9 @@ object SkinManager : SkinObserverable() {
     fun loadAssetsSkin(
         name: String,
         skinLoadListener: SkinLoadListener? = null,
-        isRepeat: Boolean = false
+        isRepeat: Boolean = false,
     ) {
-        val strategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
+        val strategy = SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ASSETS
         if (compareSkin(name, strategy) && (!isRepeat)) {
             SkinLog.log("Repeat loading")
             skinLoadListener?.loadRepeat()
@@ -119,12 +127,12 @@ object SkinManager : SkinObserverable() {
      * @param skinLoadListener 回调
      * @param isRepeat false 表示要加载的 skin 和当前使用的相同时不重复加载
      */
-    fun loadStorage(
+    fun loadStorageSkin(
         path: String,
         skinLoadListener: SkinLoadListener? = null,
         isRepeat: Boolean = false
     ) {
-        val strategy = SkinLoadStrategy.SKIN_LOADER_STARTEGY
+        val strategy = SkinLoadStrategyEnum.SKIN_LOADER_STARTEGY_STORAGE
         val name = pathName(path)
         if (compareSkin(name, strategy) && (!isRepeat)) {
             SkinLog.log("Repeat loading")
@@ -144,23 +152,55 @@ object SkinManager : SkinObserverable() {
         }
     }
 
+    /**
+     * 加载内部存储下的 zpi 皮肤文件，必须是沙箱路径
+     * @param path skin 绝对路径
+     * @param password zip 文件密码，没有可不传
+     * @param skinLoadListener 回调
+     * @param isRepeat false 表示要加载的 skin 和当前使用的相同时不重复加载
+     */
+    fun loadZipSkin(
+        path: String,
+        password: String? = null,
+        skinLoadListener: SkinLoadListener? = null,
+        isRepeat: Boolean = false
+    ) {
+        val strategy = SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ZIP
+        val name = pathName(path)
+        if (compareSkin(name, strategy) && (!isRepeat)) {
+            SkinLog.log("Repeat loading")
+            skinLoadListener?.loadRepeat()
+            return
+        }
+        val skinLoaderStrategy = startegy[strategy.name]
+        CoroutineScope(Dispatchers.IO).launch {
+            val skinPath = skinLoaderStrategy?.loadSkin(path, password)
+            launch(Dispatchers.Main) {
+                skinPath?.run {
+                    loadSkin(skinPath, name, strategy, skinLoadListener)
+                } ?: kotlin.run {
+                    skinLoadListener?.loadSkinFailure("load failure")
+                }
+            }
+        }
+    }
 
     private fun loadSkin(
         skinPath: String,
         name: String,
-        strategy: SkinLoadStrategy,
+        strategyEnum: SkinLoadStrategyEnum,
         skinLoadListener: SkinLoadListener?
     ) {
         notifyUpdateSkin()
-        SkinPreUtils.saveSkinStatus(skinPath, name, strategy.name)
+        SkinPreUtils.saveSkinStatus(skinPath, name, strategyEnum.name)
         skinLoadListener?.loadSkinSucess()
     }
 
 
-    private fun compareSkin(skinName: String, strategy: SkinLoadStrategy): Boolean {
+    private fun compareSkin(skinName: String, strategyEnum: SkinLoadStrategyEnum): Boolean {
         val name = SkinPreUtils.getSkinName()
         val loadStrategy = SkinPreUtils.getSkinStrategy()
-        if (name == skinName && strategy.name == loadStrategy) {
+        if (name == skinName && strategyEnum.name == loadStrategy) {
             return true
         }
         return false
@@ -187,8 +227,8 @@ object SkinManager : SkinObserverable() {
      * @param strategy 策略名称
      * 获取加载策略
      */
-    private fun getStrategyType(strategy: String): SkinLoadStrategy? {
-        SkinLoadStrategy.values().forEach {
+    private fun getStrategyType(strategy: String): SkinLoadStrategyEnum? {
+        SkinLoadStrategyEnum.values().forEach {
             if (it.name == strategy) {
                 return it
             }

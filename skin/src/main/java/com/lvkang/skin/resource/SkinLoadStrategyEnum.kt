@@ -7,14 +7,17 @@ package com.lvkang.skin.resource
  * @time 2020/12/07 01:07
  * @description
  */
-enum class SkinLoadStrategy {
+enum class SkinLoadStrategyEnum {
 
     /** 默认加载策略，即没有换肤效果 */
     SKIN_LOADER_STRATEGY_NONE,
 
     /** 内部存储加载策略 */
-    SKIN_LOADER_STARTEGY,
+    SKIN_LOADER_STARTEGY_STORAGE,
 
     /** Assets 加载策略 */
     SKIN_LOADER_STRATEGY_ASSETS,
+
+    /** 压缩包加载策略 */
+    SKIN_LOADER_STRATEGY_ZIP,
 }

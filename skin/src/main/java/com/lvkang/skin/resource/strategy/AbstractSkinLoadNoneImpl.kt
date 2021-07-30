@@ -1,12 +1,9 @@
 package com.lvkang.skin.resource.strategy
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.resource.AbstractSkinLoadStrategy
 import com.lvkang.skin.resource.SkinCompatResources
-import com.lvkang.skin.resource.SkinLoadStrategy
+import com.lvkang.skin.resource.SkinLoadStrategyEnum
 
 /**
  * @name SkinNoneLoaderImpl
@@ -16,10 +13,10 @@ import com.lvkang.skin.resource.SkinLoadStrategy
  * @description 默认加载策略，即不加载任何皮肤
  */
 class AbstractSkinLoadNoneImpl : AbstractSkinLoadStrategy() {
-    override fun loadSkin(path: String): String? {
+    override fun loadSkin(vararg any: String?): String? {
         SkinCompatResources.resetSkin(SkinManager.getContext().resources, this)
         return null
     }
 
-    override fun getType(): SkinLoadStrategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_NONE
+    override fun getType(): SkinLoadStrategyEnum = SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_NONE
 }

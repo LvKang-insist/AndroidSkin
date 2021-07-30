@@ -1,10 +1,12 @@
 package com.lvkang.skin.resource.strategy
 
 import com.lvkang.skin.SkinManager
+import com.lvkang.skin.config.SkinPreUtils
 import com.lvkang.skin.ktx.isFile
+import com.lvkang.skin.ktx.pathName
 import com.lvkang.skin.resource.AbstractSkinLoadStrategy
 import com.lvkang.skin.resource.SkinCompatResources
-import com.lvkang.skin.resource.SkinLoadStrategy
+import com.lvkang.skin.resource.SkinLoadStrategyEnum
 import java.io.File
 import java.io.IOException
 
@@ -18,26 +20,25 @@ import java.io.IOException
 
 class AbstractSkinLoadAssetsImpl : AbstractSkinLoadStrategy() {
 
-    override fun loadSkin(path: String): String? {
-        val skinPath = copyCache(
-            path, "${SkinManager.getApplication().getExternalFilesDir("file")}${File.separator}"
-        )
+    override fun loadSkin(vararg any: String?): String? {
+        val skinPath = copyCache(any[0]!!, skinFileDir)
         if (skinPath.isNullOrBlank()) return null
         val resource = SkinCompatResources.getSkinResources(skinPath)
         val packageName = SkinCompatResources.getSkinPackageName(skinPath)
         if (resource != null && packageName != null) {
-            SkinCompatResources.setupSkin(resource, packageName, path, this)
+            SkinCompatResources.setupSkin(resource, packageName, pathName(skinPath), this)
             return skinPath
         }
         return null
     }
 
-    override fun getType(): SkinLoadStrategy = SkinLoadStrategy.SKIN_LOADER_STRATEGY_ASSETS
+    override fun getType(): SkinLoadStrategyEnum = SkinLoadStrategyEnum.SKIN_LOADER_STRATEGY_ASSETS
 
     private fun copyCache(skinName: String, cacheDir: String): String? {
         return try {
             val outFile = File(cacheDir, skinName)
             if (isFile(outFile.path)) {
+                SkinPreUtils.clearSkinInfo()
                 return outFile.path
             }
             val input = SkinManager.getContext().resources.assets.open(skinName)
