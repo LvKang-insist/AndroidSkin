@@ -17,9 +17,8 @@ import com.lvkang.skin.wedget.helper.SkinCompatImageHelper
 class ImageViewX : AppCompatImageView, SkinCompatSupportable {
 
 
-    private val mImageHelper by lazy {
-        SkinCompatImageHelper(this)
-    }
+    private val mImageHelper by lazy { SkinCompatImageHelper(this) }
+    private val backgroundHelper by lazy { SkinCompatBackgroundHelper(this) }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -29,9 +28,11 @@ class ImageViewX : AppCompatImageView, SkinCompatSupportable {
         defStyleAttr
     ) {
         mImageHelper.loadFromAttributes(attrs, defStyleAttr)
+        backgroundHelper.loadFromAttributes(attrs, defStyleAttr)
     }
 
     override fun applySkin() {
         mImageHelper.applySkin()
+        backgroundHelper.applySkin()
     }
 }

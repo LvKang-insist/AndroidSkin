@@ -55,7 +55,6 @@ class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
     private fun setSize(res: Int) {
         if (res == INVALID_ID) return
         val size = SkinCompatResources.getDimension(res)
-        SkinLog.log("------ $size")
         size?.run { view.textSize = px2dip(this) }
     }
 

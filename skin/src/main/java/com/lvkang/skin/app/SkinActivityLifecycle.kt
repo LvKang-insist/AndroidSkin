@@ -10,6 +10,7 @@ import androidx.core.view.LayoutInflaterCompat
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.factory.SkinCompateFactory
 import com.lvkang.skin.obsreve.SkinObserver
+import com.lvkang.skin.util.SkinLog
 import java.lang.Exception
 import java.util.*
 
@@ -72,7 +73,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("SkinActivity", "A factory has already been set on this LayoutInflater")
+            SkinLog.log("A factory has already been set on this LayoutInflater")
         }
     }
 

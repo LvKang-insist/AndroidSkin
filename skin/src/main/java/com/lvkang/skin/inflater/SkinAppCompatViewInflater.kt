@@ -25,7 +25,6 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
     }
 
     private fun createViewFrom(context: Context, name: String, attres: AttributeSet): View? {
-        SkinLog.log(name)
         when (name) {
             "View" -> return ViewX(context, attres)
             "ImageView" -> return ImageViewX(context, attres)
