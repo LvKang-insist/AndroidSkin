@@ -29,6 +29,7 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
             "View" -> return ViewX(context, attres)
             "ImageView" -> return ImageViewX(context, attres)
             "Button" -> return ButtonX(context, attres)
+            "EditText" -> return EditTextX(context, attres)
             "TextView" -> return TextViewX(context, attres)
             "FrameLayout" -> return FrameLayoutX(context, attres)
             "RelativeLayout" -> return RelativeLayoutX(context, attres)
@@ -36,6 +37,7 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
             "androidx.appcompat.widget.AppCompatImageView" -> return ImageViewX(context, attres)
             "androidx.appcompat.widget.AppCompatButton" -> return ButtonX(context, attres)
             "androidx.appcompat.widget.AppCompatTextView" -> return TextViewX(context, attres)
+            "androidx.appcompat.widget.AppCompatEditText" -> return EditTextX(context, attres)
             "androidx.appcompat.widget.NestedScrollView" -> {
                 return NestedScrollViewX(context, attres)
             }

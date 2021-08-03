@@ -23,8 +23,6 @@ import java.util.*
  */
 class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
-    @Suppress("PrivatePropertyName")
-    private val TAG = "SkinActivityLifecycle"
 
     private val weekDelegateMap by lazy { WeakHashMap<Context, SkinCompateFactory>() }
     private val weekObserverMap by lazy { WeakHashMap<Context, LazySkinObserver>() }

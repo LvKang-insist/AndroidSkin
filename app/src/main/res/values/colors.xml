@@ -10,5 +10,5 @@
 
 
     <color name="skin_main_text_color">#000000</color>
-
+    <color name="skin_edit_color">#434aad</color>
 </resources>

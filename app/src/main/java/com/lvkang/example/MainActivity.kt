@@ -42,8 +42,12 @@ class MainActivity : AppCompatActivity() {
                 "${SkinManager.getApplication().getExternalFilesDir("file")}${File.separator}"
             )
             path?.run {
-                SkinManager.loadZipSkin(path,password = "3310")
+                SkinManager.loadZipSkin(path, password = "3310")
             }
+        }
+
+        findViewById<View>(R.id.button5).setOnClickListener {
+            SkinManager.loadAssetsSkin("skin5.skin")
         }
 
         findViewById<View>(R.id.none).setOnClickListener {

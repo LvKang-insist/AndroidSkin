@@ -16,6 +16,7 @@
         <attr name="android:text" />
         <attr name="android:background" />
         <attr name="android:textSize" />
+        <attr name="android:hint" />
     </declare-styleable>
 
 </resources>
