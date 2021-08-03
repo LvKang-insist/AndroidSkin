@@ -46,5 +46,4 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    api 'com.blankj:utilcodex:1.30.5'
 }

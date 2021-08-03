@@ -2,4 +2,6 @@
     <string name="app_name">AndroidSkin</string>
     <string name="skin_main_button_text">点击换肤</string>
     <string name="skin_main_text_text">跳转</string>
+
+    <string name="skin_edit_hint_text">请输入</string>
 </resources>

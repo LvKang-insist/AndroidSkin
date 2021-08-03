@@ -13,18 +13,20 @@ ___
 
 
 
-|                    | backaground | 字体颜色 | 字体大小 | 图片 |
-| ------------------ | :---------: | :------: | :------: | :--: |
-| View               |      ✅      |          |          |      |
-| AppCompatTextView  |      ✅      |    ✅     |    ✅     |      |
-| AppCompatButton    |      ✅      |    ✅     |    ✅     |      |
-| AppCompatImageView |      ✅      |          |          |  ✅   |
-| ConstraintLayout   |      ✅      |          |          |      |
-| LinearLayoutCompat |      ✅      |          |          |      |
-| NestedScrollView   |      ✅      |          |          |      |
-| FrameLayout        |      ✅      |          |          |      |
-| RelativeLayout     |      ✅      |          |          |      |
-|                    |             |          |          |      |
+|                    | backaground | 字体颜色 | 字体大小 | 图片 | hint |
+| ------------------ | :---------: | :------: | :------: | :--: | :--: |
+| View               |      ✅      |          |          |      |      |
+| AppCompatTextView  |      ✅      |    ✅     |    ✅     |      |      |
+| AppCompatButton    |      ✅      |    ✅     |    ✅     |      |      |
+| AppCompatImageView |      ✅      |          |          |  ✅   |      |
+| ConstraintLayout   |      ✅      |          |          |      |      |
+| LinearLayoutCompat |      ✅      |          |          |      |      |
+| NestedScrollView   |      ✅      |          |          |      |      |
+| FrameLayout        |      ✅      |          |          |      |      |
+| RelativeLayout     |      ✅      |          |          |      |      |
+| AppCompatEditText  |      ✅      |    ✅     |    ✅     |      |  ✅   |
+
+> 其他的陆续支持中
 
 ### 使用方式
 

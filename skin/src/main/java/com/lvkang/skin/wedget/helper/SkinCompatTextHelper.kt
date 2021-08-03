@@ -16,13 +16,13 @@ import com.lvkang.skin.wedget.SkinCompatHelper
  * @time 2020/12/10 23:10
  * @description
  */
-class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
+open class SkinCompatTextHelper(private val view: TextView) : SkinCompatHelper() {
 
-    private var sizeId = INVALID_ID
-    private var textColorId = INVALID_ID
-    private var textId = INVALID_ID
+    internal var sizeId = INVALID_ID
+    internal var textColorId = INVALID_ID
+    internal var textId = INVALID_ID
 
-    fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
+    open fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         obtainStyledAttributes(
             view, attrs, R.styleable.skinTextHelper, defStyleAttr, 0
         ) {
