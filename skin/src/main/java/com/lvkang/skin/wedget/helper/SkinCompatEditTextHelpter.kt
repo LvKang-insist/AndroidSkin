@@ -1,16 +1,10 @@
 package com.lvkang.skin.wedget.helper
 
-import android.annotation.SuppressLint
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
 import com.lvkang.skin.R
 import com.lvkang.skin.ktx.obtainStyledAttributes
-import com.lvkang.skin.ktx.tryCatch
 import com.lvkang.skin.resource.SkinCompatResources
-import com.lvkang.skin.util.SkinLog
 
 /**
  * @name SkinCompatEditTextHelpter

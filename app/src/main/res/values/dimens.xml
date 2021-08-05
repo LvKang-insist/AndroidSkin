@@ -2,4 +2,6 @@
 <resources>
     <dimen name="skin_main_text_size">20sp</dimen>
     <dimen name="skin_edit_size">25sp</dimen>
+    <dimen name="skin_card_elevation">10dp</dimen>
+    <dimen name="skin_card_radius">15dp</dimen>
 </resources>

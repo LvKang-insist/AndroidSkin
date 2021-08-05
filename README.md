@@ -13,18 +13,18 @@ ___
 
 
 
-|                    | backaground | 字体颜色 | 字体大小 | 图片 | hint |
-| ------------------ | :---------: | :------: | :------: | :--: | :--: |
-| View               |      ✅      |          |          |      |      |
-| AppCompatTextView  |      ✅      |    ✅     |    ✅     |      |      |
-| AppCompatButton    |      ✅      |    ✅     |    ✅     |      |      |
-| AppCompatImageView |      ✅      |          |          |  ✅   |      |
-| ConstraintLayout   |      ✅      |          |          |      |      |
-| LinearLayoutCompat |      ✅      |          |          |      |      |
-| NestedScrollView   |      ✅      |          |          |      |      |
-| FrameLayout        |      ✅      |          |          |      |      |
-| RelativeLayout     |      ✅      |          |          |      |      |
-| AppCompatEditText  |      ✅      |    ✅     |    ✅     |      |  ✅   |
+|                    |          backaground           | Des  |
+| ------------------ | :----------------------------: | :--: |
+| AppCompatTextView  |    背景，字体颜色，字体大小    |      |
+| AppCompatButton    |    背景，字体颜色，字体大小    |      |
+| AppCompatImageView |          背景，image           |      |
+| ConstraintLayout   |              背景              |      |
+| LinearLayoutCompat |              背景              |      |
+| NestedScrollView   |              背景              |      |
+| FrameLayout        |              背景              |      |
+| RelativeLayout     |              背景              |      |
+| AppCompatEditText  | 背景，字体颜色，字体大小，hint |      |
+| CardView           |     背景，圆角，elevation      |      |
 
 > 其他的陆续支持中
 

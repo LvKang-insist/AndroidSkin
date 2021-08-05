@@ -3,6 +3,7 @@ package com.lvkang.skin.resource
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -125,6 +126,19 @@ object SkinCompatResources {
         return null
     }
 
+     fun getColorStateList(resId: Int): ColorStateList? {
+        tryCatch {
+            if (!isDefaultSkin) {
+                val skinResId = getSkinResId(resId)
+                if (skinResId != NOT_ID)
+                    return ResourcesCompat.getColorStateList(resources, skinResId, null)
+            } else {
+                return ResourcesCompat.getColorStateList(context.resources, resId, null)
+            }
+        }
+        return null
+    }
+
     private fun getSkinResId(resId: Int): Int {
         return try {
             val resName =
@@ -132,6 +146,7 @@ object SkinCompatResources {
                     resId
                 )
             val resType = context.resources.getResourceTypeName(resId)
+            SkinLog.log("$resId  $resName $resType")
             resources.getIdentifier(resName, resType, packageName)
         } catch (e: Exception) {
             SkinLog.log(e.message ?: "Not Font resId $resId")

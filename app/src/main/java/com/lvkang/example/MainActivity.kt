@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.next).setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
         }
+        findViewById<View>(R.id.cardview).setOnClickListener {
+            SkinManager.loadAssetsSkin("skin7.skin")
+        }
     }
 
     private fun copyCache(skinName: String, cacheDir: String): String? {

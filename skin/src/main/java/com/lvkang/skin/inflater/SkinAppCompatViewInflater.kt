@@ -9,6 +9,7 @@ import com.lvkang.skin.wedget.android.FrameLayoutX
 import com.lvkang.skin.wedget.android.RelativeLayoutX
 import com.lvkang.skin.wedget.android.ViewX
 import com.lvkang.skin.wedget.androidx.*
+import com.lvkang.skin.wedget.androidx.cardview.CardViewX
 
 /**
  * @name SkinAppCompatViewInflater
@@ -38,7 +39,8 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
             "androidx.appcompat.widget.AppCompatButton" -> return ButtonX(context, attres)
             "androidx.appcompat.widget.AppCompatTextView" -> return TextViewX(context, attres)
             "androidx.appcompat.widget.AppCompatEditText" -> return EditTextX(context, attres)
-            "androidx.appcompat.widget.NestedScrollView" -> {
+            "androidx.cardview.widget.CardView" -> return CardViewX(context, attres)
+            "androidx.core.widget.NestedScrollView" -> {
                 return NestedScrollViewX(context, attres)
             }
             "androidx.constraintlayout.widget.ConstraintLayout" -> {
