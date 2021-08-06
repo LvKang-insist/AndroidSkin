@@ -4,7 +4,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
-import com.lvkang.skin.R
+import  androidx.appcompat.R
 import com.lvkang.skin.ktx.obtainStyledAttributes
 import com.lvkang.skin.resource.SkinCompatResources
 import com.lvkang.skin.wedget.SkinCompatHelper
@@ -23,10 +23,10 @@ class SkinCompatBackgroundHelper(val view: View) : SkinCompatHelper() {
 
     fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         obtainStyledAttributes(
-            view, attrs, R.styleable.skinBackgroundHelper, defStyleAttr, 0
+            view, attrs, R.styleable.ViewBackgroundHelper, defStyleAttr, 0
         ) {
             backgroundResId = it.getResourceId(
-                R.styleable.skinBackgroundHelper_android_background, INVALID_ID
+                R.styleable.ViewBackgroundHelper_android_background, INVALID_ID
             )
         }
         applySkin()

@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
-import com.lvkang.skin.R
+import  androidx.appcompat.R
 import com.lvkang.skin.ktx.obtainStyledAttributes
 import com.lvkang.skin.resource.SkinCompatResources
 import com.lvkang.skin.wedget.SkinCompatHelper
@@ -24,10 +24,10 @@ class SkinCompatImageHelper(val view: AppCompatImageView) : SkinCompatHelper() {
 
     fun loadFromAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         obtainStyledAttributes(
-            view, attrs, R.styleable.skinImageHelper, defStyleAttr, 0
+            view, attrs, R.styleable.AppCompatImageView, defStyleAttr, 0
         ) {
             src = it.getResourceId(
-                R.styleable.skinImageHelper_android_src, INVALID_ID
+                R.styleable.AppCompatImageView_android_src, INVALID_ID
             )
         }
         applySkin()
