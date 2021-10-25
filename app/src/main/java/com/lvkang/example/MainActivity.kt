@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.lvkang.skin.SkinManager
 import com.lvkang.skin.ktx.isFile
 import java.io.File
@@ -56,9 +57,17 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.next).setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
+//            findViewById<View>(R.id.cardview).setBackgroundResource(
+//                ResourcesCompat.getColor(
+//                    resources,
+//                    R.color.skin_cardview_color,
+//                    null
+//                )
+//            )
         }
         findViewById<View>(R.id.cardview).setOnClickListener {
-            SkinManager.loadAssetsSkin("skin7.skin")
+//            SkinManager.loadAssetsSkin("skin7.skin")
+            SkinManager.loadAssetsSkin("skin8.skin")
         }
     }
 

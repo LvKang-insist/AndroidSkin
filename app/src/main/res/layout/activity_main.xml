@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/card_shap"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -163,7 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="卡片 ，点击换肤"
+                android:background="@drawable/card_shap"
+                android:text="卡片 ，点击换肤,shap"
                 android:textColor="#333333"
                 android:textSize="20sp" />
 

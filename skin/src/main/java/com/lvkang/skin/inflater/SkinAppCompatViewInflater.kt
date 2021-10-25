@@ -47,10 +47,9 @@ class SkinAppCompatViewInflater : SkinLayoutInflater {
                 return ConstraintLayoutX(context, attres)
             }
             "androidx.appcompat.widget.LinearLayoutCompat" -> {
-                return LinearLayoutCompat(context, attres)
+                return LinearLayoutX(context, attres)
             }
         }
-
         return null
     }
 }

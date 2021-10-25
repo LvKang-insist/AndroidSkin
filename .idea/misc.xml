@@ -3,12 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/card_shap.xml" value="0.315625" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/edit_cursor.xml" value="0.3890625" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/skin_card_background.xml" value="0.3625" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/skin_edit_background.xml" value="0.3890625" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/skin_edit_cursor.xml" value="0.33177083333333335" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/drawable/skin_main_background.xml" value="0.41846153846153844" />
-        <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/layout/activity_main.xml" value="0.264" />
       </map>
     </option>
   </component>
