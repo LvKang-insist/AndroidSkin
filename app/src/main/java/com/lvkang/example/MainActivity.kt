@@ -22,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         view.setOnClickListener {
             SkinManager.loadAssetsSkin("skin.skin")
         }
-        findViewById<View>(R.id.button1).setOnClickListener {
-            SkinManager.loadAssetsSkin("skin1.skin")
-
-        }
+//        findViewById<View>(R.id.button1).setOnClickListener {
+//            SkinManager.loadAssetsSkin("skin1.skin")
+//
+//        }
 
         findViewById<View>(R.id.button2).setOnClickListener {
             SkinManager.loadAssetsSkin("skin2.skin")
@@ -84,10 +84,10 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
             null
         }
-        findViewById<View>(R.id.cardview).setOnClickListener {
-            SkinManager.loadAssetsSkin("skin7.skin")
-        }
-
+//        findViewById<View>(R.id.cardview).setOnClickListener {
+//            SkinManager.loadAssetsSkin("skin7.skin")
+//        }
+    }
 
 
 }
