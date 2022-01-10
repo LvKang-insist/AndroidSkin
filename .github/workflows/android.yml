@@ -23,4 +23,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleRelease
+
+
+  uses: actions/upload-artifact@v2.3.1
+  with:
+    # Artifact name
+    name: upload-apk
+    # A file, directory or wildcard pattern that describes what to upload
+    path:  |
+            ${{github.workspace}}/app/build/outputs/apk/tencent/release/*.apk
+            ${{github.workspace}}/app/build/outputs/apk/xiaomi/release/*.apk
