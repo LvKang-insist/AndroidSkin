@@ -34,7 +34,3 @@ jobs:
           path: |
             ${{github.workspace}}/app/build/outputs/apk/tencent/release/*.apk
             ${{github.workspace}}/app/build/outputs/apk/xiaomi/release/*.apk
-      Available Options:
-        warn: 警告
-        error: 错误
-        retention-days: 30 # optional
