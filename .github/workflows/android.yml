@@ -32,5 +32,5 @@ jobs:
           name: upload-apk
           # A file, directory or wildcard pattern that describes what to upload
           path: |
-            ${{github.workspace}}/app/build/outputs/apk/tencent/release/*.apk
-            ${{github.workspace}}/app/build/outputs/apk/xiaomi/release/*.apk
+            ${{github.workspace}}/apk/*.apk
+            ${{github.workspace}}/apk/xiaomi/*.apk
