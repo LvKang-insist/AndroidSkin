@@ -1,7 +1,9 @@
 package com.lvkang.example
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.lvkang.skin.app.SkinCompatActivity
 
 /**
  * @name TextActivity
@@ -10,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
  * @time 2020/12/14 00:12
  * @description
  */
-class TestActivity : AppCompatActivity() {
+class TestActivity : SkinCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)

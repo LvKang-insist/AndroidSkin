@@ -29,14 +29,22 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        installLayoutFactory(activity)
+        (activity as? SkinCompatActivity)?.run {
+        } ?: kotlin.run {
+            installLayoutFactory(activity)
+            Log.e("---345--->", "111111111111111");
+        }
+
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
 
     override fun onActivityResumed(activity: Activity) {
-        val lazyObserver = getLazyObserver(activity)
-        SkinManager.addSkinObserver(lazyObserver)
+        (activity as? SkinCompatActivity)?.run {
+        } ?: kotlin.run {
+            val lazyObserver = getLazyObserver(activity)
+            SkinManager.addSkinObserver(lazyObserver)
+        }
     }
 
     override fun onActivityPaused(activity: Activity) = Unit
@@ -46,12 +54,21 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
     override fun onActivityDestroyed(activity: Activity) {
-        val lazyObserver = getLazyObserver(activity)
-        SkinManager.removeSkinObserver(lazyObserver)
+        (activity as? SkinCompatActivity)?.run {
+        } ?: kotlin.run {
+            val lazyObserver = getLazyObserver(activity)
+            SkinManager.removeSkinObserver(lazyObserver)
+        }
+
     }
 
     private fun installLayoutFactory(context: Context) {
         try {
+            //这里不能同通过 LayoutInflaterCompat 设置 factory2
+            //因为此时的 activity 已经在 setContentView 方法这种设置过 fractory2 了
+            //factory2不允许重复设置，所以这里需要通过反射重新设置
+//            val skinFactory = getSkinFactory(context)
+//            LayoutInflaterCompat.setFactory2((context as Activity).layoutInflater, skinFactory)
             val layoutInflater = LayoutInflater.from(context)
             val inflaterCompat = LayoutInflaterCompat::class.java
             val inflater = LayoutInflater::class.java
