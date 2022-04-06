@@ -169,6 +169,9 @@
 
         </androidx.cardview.widget.CardView>
 
+
+        <include layout="@layout/layout_include" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
