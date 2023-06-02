@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -11,6 +10,8 @@
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/layout/activity_test.xml" value="0.22777777777777777" />
         <entry key="..\:/flutter/project/AndroidSkin/app/src/main/res/layout/layout_include.xml" value="0.264" />
+        <entry key="app/src/main/res/layout/activity_test.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/test_item.xml" value="0.22" />
       </map>
     </option>
   </component>

@@ -1,8 +1,9 @@
 package com.lvkang.example
 
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lvkang.skin.app.SkinCompatActivity
 
 /**
@@ -16,5 +17,20 @@ class TestActivity : SkinCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+
+        val recycler = findViewById<RecyclerView>(R.id.recycler)
+
+        recycler.layoutManager = LinearLayoutManager(this)
+
+        val list = arrayListOf<String>()
+        for (i in 0..1000)
+            list.add("")
+        recycler.adapter = TestAdapter(list)
+
+
+        findViewById<View>(R.id.test).setOnClickListener {
+            recycler?.adapter?.notifyDataSetChanged()
+            print()
+        }
     }
 }
